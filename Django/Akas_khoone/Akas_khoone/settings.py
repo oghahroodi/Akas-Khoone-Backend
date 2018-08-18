@@ -25,7 +25,7 @@ SECRET_KEY = ')$l5q81!#pdc--1%xd2hqc430$5h(asiljnb9w2ng62^%vl+0&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','testserver',]
 
 
 # Application definition
@@ -39,10 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-
-    
+    'django.contrib.staticfiles',    
 ]
 
 MIDDLEWARE = [
@@ -126,3 +123,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/Users/omid/pic/'
+
+
+
+
+# CSRF_COOKIE_SECURE = True
+
+
+LOGIN_REDIRECT_URL = 'home'
