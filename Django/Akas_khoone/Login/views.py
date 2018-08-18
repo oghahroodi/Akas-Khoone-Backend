@@ -1,8 +1,26 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 
-from django.contrib.auth import authenticate
-user = authenticate(username='john', password='secret')
-if user is not None:
-    # A backend authenticated the credentials
-else:
-    print("not found")
+
+
+def login_view(request):
+    username = request['username']
+    password = request['password']
+    user = authenticate(request, username=username, password=password)
+
+    if user is not None:
+        login(request, user)
+        return JsonResponse({'err':'0'})
+    else:
+        return JsonResponse({'err':'1', 'errlog':'username or pass is wrong'})
+
+
+def logout_view(request):
+    logout(request)
+    
+
+
+
+
