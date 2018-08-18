@@ -19,6 +19,8 @@ class Person(models.Model):
     PhoneNumber = models.CharField(validators=[phone_regex], max_length=17, blank=True) # validators should be a list
     validation = models.BooleanField(default=False)
     AcountCreationDate = models.DateTimeField('date published')
+    Username = models.CharField(max_length=100,null=False)
+
     
 
 

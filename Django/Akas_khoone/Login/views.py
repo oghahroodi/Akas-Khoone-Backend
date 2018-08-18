@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 
 
-
 def login_view(request):
     username = request['username']
     password = request['password']
@@ -15,12 +14,6 @@ def login_view(request):
         return JsonResponse({'err':'0'})
     else:
         return JsonResponse({'err':'1', 'errlog':'username or pass is wrong'})
-
-
-def logout_view(request):
-    logout(request)
-    
-
 
 
 
