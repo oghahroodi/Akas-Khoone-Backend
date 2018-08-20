@@ -14,6 +14,6 @@ class Person(models.Model):
     acountCreationDate = models.DateTimeField('date published')
     username = models.CharField(max_length=100,null=False)
 
-class Pic(models.Model):
+class PicPerson(models.Model):
     PicAdress = models.ImageField(upload_to="")
     person = models.ForeignKey(Person,on_delete=models.CASCADE)
