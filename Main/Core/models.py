@@ -1,3 +1,41 @@
+from django.core.validators import RegexValidator
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
+
+class Person(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
+    name = models.CharField(max_length=100, null=False)
+    bio = models.CharField(max_length=250, null=True)
+    followerNumber = models.IntegerField(default=0)
+    followingNumber = models.IntegerField(default=0)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phoneNumber = models.CharField(validators=[phone_regex], max_length=17, blank=True) # validators should be a list
+    validation = models.BooleanField(default=False)
+    acountCreationDate = models.DateTimeField('date published')
+    username = models.CharField(max_length=100,null=False)
+    postNumber = models.IntegerField(default=0)
+    # store path of images to database for performance
+    picAddress = models.CharField(max_length=200, null=False, unique=True)
+
+class Post(models.Model):
+    description = models.CharField(max_length=250, null=True)
+    likeNumber = models.IntegerField(default=0)
+    commetNumber = models.IntegerField(default=0)
+    date = models.DateTimeField('date published')
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    # store path of images to database for performance
+    picAdress = models.CharField(max_length=200, null=False, unique=True)
+
+# table for tag
+class Tag(models.Model):
+    info = models.CharField(max_length=255, null=False, unique=True)
+
+# table for conect tag to post
+class TagPost(models.Model):
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
+
+
