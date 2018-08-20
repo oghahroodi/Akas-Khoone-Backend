@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
+import datetime
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,7 +25,7 @@ SECRET_KEY = '$=s-$h-c%a)syn+#hxl-3nl@+xnwmi^=@ef&$+)ib#!j-0!8v#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ ]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -126,6 +126,13 @@ STATIC_URL = '/static/'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/Users/omid/pic/'
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+
+}
+
 
 REST_FRAMEWORK = {
   'DEFAULT_AUTHENTICATION_CLASSES': (
