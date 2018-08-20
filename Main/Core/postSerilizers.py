@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from rest_framework import serializers
 
 from .postModels import Post
@@ -16,3 +17,6 @@ class PostSerilizer(serializers.Serializer):
         model = Post
         fields = ('id', 'description', 'likeNumber', 'commentNumber', 'date',)
 
+=======
+#create post serilizers
+>>>>>>> 0392953419b3dea0b84147d9bd65b2bca02c007d

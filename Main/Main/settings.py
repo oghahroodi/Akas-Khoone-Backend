@@ -37,7 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
     'Core'
+=======
+    #add core app to django
+    'Core.apps.CoreConfig'
+    #add django rest
+    'rest_framework',
+>>>>>>> 0392953419b3dea0b84147d9bd65b2bca02c007d
 ]
 
 MIDDLEWARE = [
