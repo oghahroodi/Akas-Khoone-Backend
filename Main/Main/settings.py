@@ -25,7 +25,7 @@ SECRET_KEY = '$=s-$h-c%a)syn+#hxl-3nl@+xnwmi^=@ef&$+)ib#!j-0!8v#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ ]
 
 
 # Application definition
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     #add core app to django
     'Core.apps.CoreConfig'
     #add django rest
-    'rest_framework',
+    # 'rest_framework',
 
 ]
 

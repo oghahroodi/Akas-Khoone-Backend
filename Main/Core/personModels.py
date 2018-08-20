@@ -14,7 +14,6 @@ class Person(models.Model):
     validation = models.BooleanField(default=False)
     acountCreationDate = models.DateTimeField('date published')
     username = models.CharField(max_length=100,null=False)
+    # store path of images to database for performance
+    picAdress = models.CharField(max_length=200, null=False, unique=True)
 
-class PicPerson(models.Model):
-    PicAdress = models.ImageField(upload_to="")
-    person = models.ForeignKey(Person,on_delete=models.CASCADE)
