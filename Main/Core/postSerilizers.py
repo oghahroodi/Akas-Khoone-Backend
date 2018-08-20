@@ -1,11 +1,11 @@
-<<<<<<< HEAD
+
 from rest_framework import serializers
 
 from .postModels import Post
 
 from django.contrib.auth import authenticate
 
-
+#create post serilizers
 class PostSerilizer(serializers.Serializer):
     description = serializers.CharField(max_length=250, null=True)
     likeNumber = serializers.IntegerField(default=0)
@@ -17,6 +17,3 @@ class PostSerilizer(serializers.Serializer):
         model = Post
         fields = ('id', 'description', 'likeNumber', 'commentNumber', 'date',)
 
-=======
-#create post serilizers
->>>>>>> 0392953419b3dea0b84147d9bd65b2bca02c007d
