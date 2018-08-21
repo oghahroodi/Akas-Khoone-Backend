@@ -8,6 +8,8 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('description', 'likeNumber', 'commentNumber', 'date', 'person')
 
+
+
 class PersonSerializer(serializers.ModelSerializer):
 
     class Meta:

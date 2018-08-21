@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 import datetime
 import os
+# from rest_framework.pagination import PageNumberPagination
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #add core app to django
+
+
     'Core.apps.CoreConfig'
 
 ]
@@ -139,3 +141,14 @@ REST_FRAMEWORK = {
     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
   ),
 }
+
+
+# class SetPaginationForProfile(PageNumberPagination):
+#     page_size = 10
+#     page_size_query_param = 'page_size'
+#     max_page_size = 100
+
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.SetPaginationForProfile',
+# }

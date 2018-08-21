@@ -1,0 +1,18 @@
+SSH alias config
+Add user team4 (Nk&dw2Bfy0w!n*dCn9#48a)
+disable login as root
+Config ssh
+Set time
+Open port 22222
+Close port 22
+Change ssh port to 22222
+Config selinux for port 22222
+Key#bug
+reduce nginx permission
+Run nginx
+Clone project
+
+
+DB
+Nginx
+
