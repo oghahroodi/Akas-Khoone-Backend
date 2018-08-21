@@ -12,3 +12,6 @@ class sendInfo(APIView):
         person = Person.objects.filter(user=userid)
         serializer = PostSerializer(person)
         return JsonResponse(serializer)
+
+
+    #salam
