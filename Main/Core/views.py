@@ -6,6 +6,8 @@ from Core.models import Person, Post
 from Core.serializers import PersonSerializer,PostSerializer
 from django.http import JsonResponse
 from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import *
 
 class SendInfo(APIView):
     def get(self, request):
@@ -14,10 +16,16 @@ class SendInfo(APIView):
         serializer = PersonSerializer(person)
         return JsonResponse(serializer.data)
 
+class SetPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+
 
 class SendPosts(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    pagination_class = SetPagination
 
     def get_queryset(self):
         user = self.request.user.id

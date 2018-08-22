@@ -142,13 +142,3 @@ REST_FRAMEWORK = {
   ),
 }
 
-
-# class SetPaginationForProfile(PageNumberPagination):
-#     page_size = 10
-#     page_size_query_param = 'page_size'
-#     max_page_size = 100
-
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.SetPaginationForProfile',
-# }
