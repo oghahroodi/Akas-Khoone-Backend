@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
 
-    'Core.apps.CoreConfig'
-
+    'Core.apps.CoreConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -140,5 +140,6 @@ REST_FRAMEWORK = {
   'DEFAULT_AUTHENTICATION_CLASSES': (
     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
   ),
+  'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 

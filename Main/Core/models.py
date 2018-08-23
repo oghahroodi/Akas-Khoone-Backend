@@ -24,6 +24,9 @@ class Post(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     picAddress = models.CharField(max_length=200, null=False, unique=True)
 
+    def __repr__(self):
+        return self.name + ' is added.'
+
 
 class Tag(models.Model):
     info = models.CharField(max_length=255, null=False, unique=True)
