@@ -29,4 +29,17 @@ class SendPosts(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user.id
         return Post.objects.filter(person=user)
-        
+
+
+class SendContactPerson(APIView):
+
+    def post(self, request):
+        responseJSON = {}
+        phoneList = request.data["phoneNumber"].split(',')
+        for i in phoneList:
+            pass
+
+        return Response({'received data': request.data})
+
+
+

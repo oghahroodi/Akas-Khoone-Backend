@@ -9,4 +9,5 @@ urlpatterns = [
     path('login/refresh/',  refresh_jwt_token, name='refresh'),
     path('profile/info/', views.SendInfo.as_view()),
     path('profile/posts/', views.SendPosts.as_view()),
+    path('contacts/', views.SendContactPerson.as_view()),
 ]
