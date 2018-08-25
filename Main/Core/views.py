@@ -1,14 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework import status
-from Core.models import Person, Post
-from Core.serializers import PersonSerializer,PostSerializer
-from Core.models import Person
-from Core.serializers import PersonSerializer, UserSerializer
+from .models import Person, Post
+from .serializers import UserSerializer, PersonSerializer, PostSerializer
 from django.http import JsonResponse
 from rest_framework import generics
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.pagination import *
-from rest_framework.parsers import JSONParser
+from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+from rest_framework.permissions import AllowAny
+
 
 class sendInfo(APIView):
     def get(self, request):
@@ -16,6 +16,22 @@ class sendInfo(APIView):
         person = Person.objects.get(user__id=userid)
         serializer = PersonSerializer(person)
         return JsonResponse(serializer.data)
+
+
+
+
+class ChangePassword(APIView):
+    def patch(self, request):
+        old = request.data.get("oldPassword")
+        new = request.data.get("newPassword")
+        validate_password(new)
+        if request.user.check_password(old):
+            user = User.objects.get(id=request.user.id)
+            user.set_password(new)
+            user.save()
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        return Response("wrong password", status=status.HTTP_400_BAD_REQUEST)
 
 class SetPagination(PageNumberPagination):
     page_size = 2
@@ -36,12 +52,12 @@ class SendPosts(generics.ListAPIView):
 class SendContactPerson(APIView):
 
     def post(self, request):
-        responseJSON = {}
         phoneList = request.data["phoneNumber"].split(',')
         for i in phoneList:
             pass
 
         return Response({'received data': request.data})
+
 
 
 

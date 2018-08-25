@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Core.models import Post, Person
+from .models import Post, Person
 from django.contrib.auth.models import User
 from django.utils import timezone
 

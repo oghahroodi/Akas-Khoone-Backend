@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path,include
-from rest_framework_simplejwt.views import TokenObtainPairView , TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 urlpatterns = [
     path('login/',  TokenObtainPairView.as_view(), name='login'),
@@ -10,5 +10,6 @@ urlpatterns = [
     path('contacts/', views.SendContactPerson.as_view()),
     path('register/completion/', views.CreateUser.as_view()),
     path('register/initial/', views.CheckUsername.as_view()),
+    path('profile/settings/', views.ChangePassword.as_view()),
 
 ]

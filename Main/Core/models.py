@@ -1,6 +1,8 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+
 
 class Person(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
@@ -17,6 +19,7 @@ class Person(models.Model):
     postNumber = models.IntegerField(default=0)
     # store path of images to database for performance
     picAddress = models.CharField(max_length=200, null=True)
+
 
 class Post(models.Model):
     description = models.CharField(max_length=250, null=True)
