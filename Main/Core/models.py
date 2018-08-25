@@ -1,12 +1,6 @@
-from django.utils import  timezone
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import User
-from django.template.backends import django
-from django.utils import timezone
-from django.core.exceptions import ValidationError
-import string
-
 
 class Person(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
@@ -22,9 +16,7 @@ class Person(models.Model):
     username = models.CharField(validators=[user_regex], max_length=100, null=False, unique=True)
     postNumber = models.IntegerField(default=0)
     # store path of images to database for performance
-    picAddress = models.CharField(max_length=200, null=False, unique=True)
-
-
+    picAddress = models.CharField(max_length=200, null=True)
 
 class Post(models.Model):
     description = models.CharField(max_length=250, null=True)
@@ -35,9 +27,10 @@ class Post(models.Model):
     # store path of images to database for performance
     picAddress = models.CharField(max_length=200, null=False, unique=True)
 
-#
-#
-# table for tag
+    def __repr__(self):
+        return self.name + ' is added.'
+
+
 class Tag(models.Model):
     info = models.CharField(max_length=255, null=False, unique=True)
 

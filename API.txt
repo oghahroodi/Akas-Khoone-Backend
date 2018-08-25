@@ -1,0 +1,23 @@
+Domain/profile/posts/ -> return:
+    {
+        "count": X,
+        "next": "http://127.0.0.1:8000/profile/posts/?page=2", -> for next page
+        "previous": X,
+        "results": [
+            {
+                "description": "X",
+                "likeNumber": X,
+                "commentNumber": X,
+                "date": "X",
+                "person": X
+            },
+            {
+                "description": "X",
+                "likeNumber": X,
+                "commentNumber": X,
+                "date": "X",
+                "person": X
+            }
+        ]
+    }
+

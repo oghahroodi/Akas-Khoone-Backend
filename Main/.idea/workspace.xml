@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="e92883f2-f85c-4d9f-a7b4-f4b502a67165" name="Default Changelist" comment="" />
+=======
+    <list default="true" id="e92883f2-f85c-4d9f-a7b4-f4b502a67165" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+    </list>
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,15 +94,21 @@
     <session id="672215439">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.1" value="1" />
+<<<<<<< HEAD
+          <entry key="project.open.time.19" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.opened" value="3" />
+=======
           <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.open.time.5" value="4" />
+          <entry key="project.open.time.5" value="3" />
           <entry key="project.open.time.7" value="2" />
-          <entry key="project.opened" value="11" />
+          <entry key="project.opened" value="10" />
+>>>>>>> d6045a79e1de43352d1f413b1bf299739788d1e5
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -133,7 +151,7 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="408">
@@ -145,11 +163,21 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Core/urls.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+<<<<<<< HEAD
+            <state relative-caret-position="51">
+              <caret line="4" column="20" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="20" />
+=======
+            <state relative-caret-position="102">
+              <caret line="6" column="59" selection-start-line="6" selection-start-column="59" selection-end-line="6" selection-end-column="59" />
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
+=======
             <state relative-caret-position="85">
               <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
+>>>>>>> d6045a79e1de43352d1f413b1bf299739788d1e5
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -172,8 +200,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Core/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+<<<<<<< HEAD
+            <state relative-caret-position="102">
+              <caret line="8" selection-start-line="8" selection-end-line="8" />
+=======
+            <state relative-caret-position="187">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+                <marker date="1534845054772" expanded="true" signature="302:452" ph="..." />
+              </folding>
+=======
             <state>
               <caret column="38" selection-start-column="38" selection-end-column="38" />
+>>>>>>> d6045a79e1de43352d1f413b1bf299739788d1e5
             </state>
           </provider>
         </entry>
@@ -181,7 +223,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Core/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
+            <state relative-caret-position="323">
               <caret line="19" column="73" selection-start-line="19" selection-start-column="73" selection-end-line="19" selection-end-column="73" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
@@ -191,6 +233,18 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Main/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="442">
+              <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+=======
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -236,11 +290,27 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+<<<<<<< HEAD
+<<<<<<< HEAD
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-48" />
+    <option name="y" value="45" />
+    <option name="width" value="1943" />
+    <option name="height" value="1103" />
+=======
   <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-894" />
+    <option name="y" value="198" />
+    <option name="width" value="1944" />
+    <option name="height" value="1104" />
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
+=======
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-895" />
     <option name="y" value="195" />
     <option name="width" value="1945" />
     <option name="height" value="1105" />
+>>>>>>> d6045a79e1de43352d1f413b1bf299739788d1e5
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -335,10 +405,24 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <frame x="-50" y="48" width="1554" height="882" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31543624" />
+=======
+    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.30607286" />
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
+=======
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.34832215" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.34362417" />
+>>>>>>> d6045a79e1de43352d1f413b1bf299739788d1e5
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -385,13 +469,55 @@
     <entry file="file://$PROJECT_DIR$/Core/apps.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/Core/tests.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="4" column="20" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+=======
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
     <entry file="file://$PROJECT_DIR$/Core/admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
+        <state relative-caret-position="102">
           <caret line="8" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/Core/tests.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+=======
+>>>>>>> d6045a79e1de43352d1f413b1bf299739788d1e5
     <entry file="file://$PROJECT_DIR$/Main/wsgi.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -405,38 +531,32 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
+    <entry file="file://$PROJECT_DIR$/Main/urls.py">
+=======
+    <entry file="file://$PROJECT_DIR$/Core/tests.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Core/serializers.py">
+>>>>>>> d6045a79e1de43352d1f413b1bf299739788d1e5
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="38" selection-start-column="38" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="19" column="73" selection-start-line="19" selection-start-column="73" selection-end-line="19" selection-end-column="73" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-            <marker date="1535169883266" expanded="true" signature="302:303" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/tests.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/Main/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+=======
+    <entry file="file://$PROJECT_DIR$/Core/models.py">
+=======
+    <entry file="file://$PROJECT_DIR$/Main/settings.py">
+>>>>>>> d6045a79e1de43352d1f413b1bf299739788d1e5
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
           <caret line="140" column="1" selection-start-line="140" selection-start-column="1" selection-end-line="140" selection-end-column="1" />
@@ -449,6 +569,28 @@
           <caret line="24" selection-start-line="24" selection-end-line="24" />
           <folding>
             <element signature="e#628#660#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="73" selection-start-line="19" selection-start-column="73" selection-end-line="19" selection-end-column="73" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+            <marker date="1535169883266" expanded="true" signature="302:303" ph="..." />
+          </folding>
+>>>>>>> 38afbb9e4e840b022ae1a2ed528789c63b41bba3
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
