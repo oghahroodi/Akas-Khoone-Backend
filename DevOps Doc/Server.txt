@@ -11,6 +11,16 @@ Key#bug
 reduce nginx permission
 Run nginx
 Clone project
+install tuned
+systemctl start tuned
+systemctl enable tuned
+systemctl status tuned
+systemctl stop tuned
+tuned-adm active
+tuned-adm list
+tuned-adm  profile throughput-performance
+tuned-adm active
+tuned-adm recommend
 
 
 DB
