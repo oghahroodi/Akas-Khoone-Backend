@@ -21,7 +21,7 @@ tuned-adm list
 tuned-adm  profile throughput-performance
 tuned-adm active
 tuned-adm recommend
-
+install uwsgi
 
 
 
