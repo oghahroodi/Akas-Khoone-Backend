@@ -16,9 +16,7 @@ class Person(models.Model):
     username = models.CharField(validators=[user_regex], max_length=100, null=False, unique=True)
     postNumber = models.IntegerField(default=0)
     # store path of images to database for performance
-    picAddress = models.CharField(max_length=200, null=False, unique=True)
-
-
+    picAddress = models.CharField(max_length=200, null=True)
 
 class Post(models.Model):
     description = models.CharField(max_length=250, null=True)
@@ -26,6 +24,7 @@ class Post(models.Model):
     commentNumber = models.IntegerField(default=0)
     date = models.DateTimeField('date published')
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    # store path of images to database for performance
     picAddress = models.CharField(max_length=200, null=False, unique=True)
 
     def __repr__(self):
@@ -35,8 +34,11 @@ class Post(models.Model):
 class Tag(models.Model):
     info = models.CharField(max_length=255, null=False, unique=True)
 
-
+# table for connect tag to post
 class TagPost(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
+
 
