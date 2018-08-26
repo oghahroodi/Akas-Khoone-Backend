@@ -32,13 +32,16 @@ class Post(models.Model):
     commentNumber = models.IntegerField(default=0)
     date = models.DateTimeField('date published', default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    picAddress = models.CharField(max_length=200, null=False, unique=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
+    def __str__(self):
+        return self.description
 
 class Tag(models.Model):
-    info = models.CharField(max_length=255, null=False, unique=True)
+    name = models.CharField(max_length=255, null=False, unique=True)
 
+    def __str__(self):
+        return self.name
 
 class TagPost(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
@@ -46,5 +49,5 @@ class TagPost(models.Model):
 
 
 class Relation(models.Model):
-    userFollowing = models.IntegerField(max_length=255, null=False)
-    userFollower = models.IntegerField(max_length=255, null=False)
+    userFollowing = models.IntegerField(null=False)
+    userFollower = models.IntegerField(null=False)
