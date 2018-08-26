@@ -30,17 +30,14 @@ class Post(models.Model):
     description = models.CharField(max_length=250, null=True)
     likeNumber = models.IntegerField(default=0)
     commentNumber = models.IntegerField(default=0)
-    date = models.DateTimeField('date published' ,default=timezone.now)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # store path of images to database for performance
+    date = models.DateTimeField('date published', default=timezone.now)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     picAddress = models.CharField(max_length=200, null=False, unique=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
 
 class Tag(models.Model):
     info = models.CharField(max_length=255, null=False, unique=True)
-
-# table for connect tag to post
 
 
 class TagPost(models.Model):

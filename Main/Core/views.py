@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Person, Post
-from .serializers import UserSerializer, PersonSerializer, PostSerializer
+from Core.models import Person, Post
+from Core.serializers import PersonSerializer, UserSerializer, PostSerializer
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
@@ -12,14 +12,13 @@ from rest_framework.permissions import AllowAny
 
 
 
-class sendInfo(APIView):
+
+class ProfileInfo(APIView):
     def get(self, request):
         userid = request.user.id
         person = Person.objects.get(user__id=userid)
         serializer = PersonSerializer(person)
         return JsonResponse(serializer.data)
-
-
 
 
 class ChangePassword(APIView):
@@ -42,7 +41,7 @@ class SetPagination(PageNumberPagination):
     max_page_size = 10
 
 
-class SendPosts(generics.ListAPIView):
+class ProfilePosts(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = SetPagination
@@ -50,6 +49,7 @@ class SendPosts(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user.id
         return Post.objects.filter(user=user)
+
 
 
 class SendContactPerson(APIView):
@@ -64,17 +64,18 @@ class SendContactPerson(APIView):
     #     return Response({'received data': request.data})
 
 
-
 class CreateUser(APIView):
+    permission_classes = (AllowAny,)
     def post(self, request):
         serializer = PersonSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.create(validated_data=request.data)
+            serializer.save()
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckUsername(APIView):
+    permission_classes = (AllowAny,)
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():

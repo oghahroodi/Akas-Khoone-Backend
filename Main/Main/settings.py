@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
     'Core.apps.CoreConfig',
     'rest_framework',
 ]
@@ -129,6 +128,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = '/Users/omid/pic/'
 
 
+
 # Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -141,3 +141,4 @@ REST_FRAMEWORK = {
 
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
+
