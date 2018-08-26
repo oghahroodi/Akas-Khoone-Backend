@@ -68,13 +68,7 @@ class MakePost(APIView):
 
     def post(self, request):
         userid = request.user.id
-        # print(PostSerializer())
         serializer = PostSerializer(data=request.data)
-        # serializer = PostSerializer(image=request.data)
-        # serializer = PostSerializer(picAddress=request.picAddress)
-        # serializer = PostSerializer(date=request.date)
-        # serializer = PostSerializer(person=userid)
-        # print(request.user.id)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

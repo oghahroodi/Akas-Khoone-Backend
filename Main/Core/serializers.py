@@ -10,6 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('description', 'likeNumber', 'commentNumber',
                   'user', 'picAddress', 'image')
+                  
 
 
 

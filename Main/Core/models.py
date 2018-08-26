@@ -30,7 +30,7 @@ class Post(models.Model):
     description = models.CharField(max_length=250, null=True)
     likeNumber = models.IntegerField(default=0)
     commentNumber = models.IntegerField(default=0)
-    date = models.DateTimeField('date published')
+    date = models.DateTimeField('date published' ,default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # store path of images to database for performance
     picAddress = models.CharField(max_length=200, null=False, unique=True)
@@ -47,7 +47,7 @@ class TagPost(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
-class Relation(models.Model):
-    userFollowing = models.CharField(max_length=255, null=False)
-    userFollower = models.CharField(max_length=255, null=False)
 
+class Relation(models.Model):
+    userFollowing = models.IntegerField(max_length=255, null=False)
+    userFollower = models.IntegerField(max_length=255, null=False)
