@@ -31,7 +31,7 @@ class Post(models.Model):
     likeNumber = models.IntegerField(default=0)
     commentNumber = models.IntegerField(default=0)
     date = models.DateTimeField('date published', default=timezone.now)
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     picAddress = models.CharField(max_length=200, null=False, unique=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
