@@ -15,4 +15,5 @@ urlpatterns = [
     path('profile/settings/', views.ChangePassword.as_view()),
 
     path('makepost/', views.MakePost.as_view()),
+    path('checkcontacts/', views.CheckContacts.as_view())
 ]

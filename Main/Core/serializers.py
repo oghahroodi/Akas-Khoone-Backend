@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Core.models import Post, Person
+from .models import Post, Person
 from django.contrib.auth.models import User
 import django.contrib.auth.password_validation as validators
 
@@ -34,7 +34,7 @@ class PersonSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('user', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber',
-                  'phoneNumber', 'username', 'picAddress'
+                  'phoneNumber', 'username', 'profileImage'
                   )
 
     def create(self, validated_data):

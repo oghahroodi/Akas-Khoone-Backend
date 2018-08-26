@@ -22,8 +22,10 @@ class Person(models.Model):
     username = models.CharField(
         validators=[user_regex], max_length=100, null=False, unique=True)
     postNumber = models.IntegerField(default=0)
+    profileImage = models.ImageField(upload_to='images/%Y/%m/%d/')
+
     # store path of images to database for performance
-    picAddress = models.CharField(max_length=200, null=True)
+    #picAddress = models.CharField(max_length=200, null=True)
 
 
 class Post(models.Model):
@@ -46,5 +48,5 @@ class TagPost(models.Model):
 
 
 class Relation(models.Model):
-    userFollowing = models.IntegerField(max_length=255, null=False)
-    userFollower = models.IntegerField(max_length=255, null=False)
+    userFollowing = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', null=False)
+    userFollowed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed', null=False)
