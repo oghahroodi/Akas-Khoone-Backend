@@ -1,15 +1,7 @@
 from rest_framework import serializers
-from .models import Post, Person
+from Core.models import *
 from django.contrib.auth.models import User
 import django.contrib.auth.password_validation as validators
-
-
-class PostSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Post
-        fields = ('description', 'likeNumber', 'commentNumber',
-                  'user', 'picAddress', 'image')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,6 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
             user.set_password(self.validated_data['password'])
             user.save()
             return user
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ('user', 'description', 'likeNumber', 'commentNumber', 'image')
 
 
 class PersonSerializer(serializers.ModelSerializer):
