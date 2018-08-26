@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
     'Core.apps.CoreConfig',
     'rest_framework',
 ]
@@ -140,7 +139,5 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
-
-  'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
-
