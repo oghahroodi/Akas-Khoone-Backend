@@ -21,6 +21,11 @@ tuned-adm list
 tuned-adm  profile throughput-performance
 tuned-adm active
 tuned-adm recommend
+install uwsgi
+Disable nginx
+Run Django server on port 80
+
+
 
 
 DB
