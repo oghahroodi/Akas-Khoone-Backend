@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Post, Person, Relation
-from .models import *
 from django.contrib.auth.models import User
 import django.contrib.auth.password_validation as validators
 
@@ -39,13 +38,6 @@ class PersonUsernameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ('username',)
-
-
-class PostSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Post
-        fields = ('user', 'description', 'likeNumber', 'commentNumber', 'image')
 
 
 class PersonSerializer(serializers.ModelSerializer):
