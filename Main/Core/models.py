@@ -34,12 +34,11 @@ class Post(models.Model):
     commentNumber = models.IntegerField(default=0)
     date = models.DateTimeField('date published', default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    picAddress = models.CharField(max_length=200, null=False, unique=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
 
 class Tag(models.Model):
-    info = models.CharField(max_length=255, null=False, unique=True)
+    name = models.CharField(max_length=255, null=False, unique=True)
 
 
 class TagPost(models.Model):
