@@ -1,7 +1,21 @@
 from rest_framework import serializers
-from Core.models import *
+from .models import Post, Person, Relation
 from django.contrib.auth.models import User
 import django.contrib.auth.password_validation as validators
+
+
+class RelationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Relation
+        fields = ('userFollowing', 'userFollowed')
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ('description', 'likeNumber', 'commentNumber',
+                  'user', 'picAddress', 'image')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -32,6 +46,14 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ('user', 'description', 'likeNumber', 'commentNumber', 'image')
 
 
+
+
+class PersonUsernameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ('username',)
+
+
 class PersonSerializer(serializers.ModelSerializer):
 
     user = UserSerializer(required=True)
@@ -51,4 +73,3 @@ class PersonSerializer(serializers.ModelSerializer):
             user = serializer.save()
             person, created = Person.objects.update_or_create(user=user, **validated_data)
             return person
-
