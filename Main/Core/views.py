@@ -5,9 +5,9 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
 from django.contrib.auth.models import User
-from django.contrib.auth.password_validation import validate_password
 from rest_framework.permissions import AllowAny
 from Core.utilities import extractHashtags
+from rest_framework_simplejwt.views import token_obtain_pair
 
 
 class ProfileInfo(APIView):
@@ -92,6 +92,8 @@ class CreateUser(APIView):
         serializer = PersonSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            a = token_obtain_pair(request)
+            print(a)
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -99,6 +101,7 @@ class CreateUser(APIView):
 class CheckUsername(APIView):
     permission_classes = (AllowAny,)
     def post(self, request):
+        print(request.data)
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             return JsonResponse({'status': 'ACCEPTED'}, status=status.HTTP_202_ACCEPTED)

@@ -10,12 +10,19 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'password')
 
-    def save(self, **kwargs):
-        user = User(username=self.validated_data['username'])
-        if validators.validate_password(self.validated_data['password'], user):
-            user.set_password(self.validated_data['password'])
-            user.save()
-            return user
+    def validate_password(self, value):
+        if validators.validate_password(value) is None:
+            return value
+
+    #def validate_username(self,value):
+
+
+    # def save(self, **kwargs):
+    #     user = User(username=self.validated_data['username'])
+    #     if validators.validate_password(self.validated_data['password'], user):
+    #         user.set_password(self.validated_data['password'])
+    #         user.save()
+    #         return user
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -33,8 +40,9 @@ class PersonSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('user', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber',
-                  'phoneNumber', 'username', 'profileImage'
+                  'phoneNumber', 'username'
                   )
+        #, 'profileImage'
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
@@ -43,3 +51,4 @@ class PersonSerializer(serializers.ModelSerializer):
             user = serializer.save()
             person, created = Person.objects.update_or_create(user=user, **validated_data)
             return person
+
