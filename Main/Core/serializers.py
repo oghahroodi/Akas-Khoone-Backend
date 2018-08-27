@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Post, Person, Relation
+from .models import *
 from django.contrib.auth.models import User
 import django.contrib.auth.password_validation as validators
 
@@ -8,14 +9,6 @@ class RelationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Relation
         fields = ('userFollowing', 'userFollowed')
-
-
-class PostSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Post
-        fields = ('description', 'likeNumber', 'commentNumber',
-                  'user', 'picAddress', 'image')
 
 
 class UserSerializer(serializers.ModelSerializer):
