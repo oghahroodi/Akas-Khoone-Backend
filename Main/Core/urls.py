@@ -16,5 +16,4 @@ urlpatterns = [
     path('makepost/', views.MakePost.as_view()),
     path('checkcontacts/', views.CheckContacts.as_view()),
     path('follow/', views.follow.as_view()),
-    path('checkcontacts/', views.CheckContacts.as_view())
 ]
