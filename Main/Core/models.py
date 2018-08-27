@@ -22,7 +22,7 @@ class Person(models.Model):
     username = models.CharField(
         validators=[user_regex], max_length=100, null=False, unique=True)
     postNumber = models.IntegerField(default=0)
-    profileImage = models.ImageField(upload_to='images/%Y/%m/%d/')
+    #profileImage = models.ImageField(upload_to='images/%Y/%m/%d/')
 
     # store path of images to database for performance
     #picAddress = models.CharField(max_length=200, null=True)
