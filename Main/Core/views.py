@@ -1,8 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Person, Post, Relation
-from .serializers import PersonSerializer, UserSerializer, PostSerializer, PersonUsernameSerializer, RelationSerializer
 from .serializers import *
+from .models import *
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
@@ -103,26 +102,18 @@ class CheckContacts(APIView):
             try:
                 contact = Person.objects.get(phoneNumber=Number)
                 try:
-                    relation = Relation.objects.get(userFollowing=request.user.id, userFollower=contact.user.id)
-                    contactSituation.append({'contact': PersonUsernameSerializer(contact).data,
+                    relation = Relation.objects.get(userFollowing=request.user.id, userFollowed=contact.user.id)
+                    contactSituation.append({'contact': PersonFollowPageSerializer(contact).data,
                                              'status': contactState(0)})
                 except Relation.DoesNotExist:
-                    contactSituation.append({'contact': PersonUsernameSerializer(contact).data,
+                    contactSituation.append({'contact': PersonFollowPageSerializer(contact).data,
                                              'status': contactState(1)})
 
             except Person.DoesNotExist:
                 contactSituation.append({'phoneNumber': Number, 'status': contactState(2)})
         return Response(contactSituation, status=status.HTTP_200_OK)
 
-class MakePost(APIView):
 
-    def post(self, request):
-        userid = request.user.id
-        serializer = PostSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def contactState(index):
@@ -142,12 +133,12 @@ class follow(APIView):
             try:
                 relation = Relation.objects.get(userFollowing=request.user.id, userFollowed=contact.user.id)
                 relation.delete()
-                return Response({"status": "Unfollowed"}, status=status.HTTP_200_OK)
+                return Response({"status": "unfollowed"}, status=status.HTTP_200_OK)
             except Relation.DoesNotExist:
                 serializer = RelationSerializer(data=makeRelation(request.user.id, contact.user.id))
                 if serializer.is_valid():
                     serializer.save()
-                    return Response({"status":"followed"}, status=status.HTTP_201_CREATED)
+                    return Response({"status": "followed"}, status=status.HTTP_201_CREATED)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Person.DoesNotExist:
             Response({"status": "user does not exist"}, status=status.HTTP_204_NO_CONTENT)

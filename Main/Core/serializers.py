@@ -14,8 +14,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('description', 'likeNumber', 'commentNumber',
-                  'user', 'picAddress', 'image')
+        fields = ('user', 'description', 'likeNumber', 'commentNumber', 'image')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -34,10 +33,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class PersonUsernameSerializer(serializers.ModelSerializer):
+class PersonFollowPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ('username',)
+        fields = ('username', 'phoneNumber',)
 
 
 class PersonSerializer(serializers.ModelSerializer):
