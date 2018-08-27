@@ -9,7 +9,7 @@ from rest_framework.pagination import *
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.permissions import AllowAny
-from Core.utilities import extractHashtags
+from .utilities import extractHashtags
 
 
 class ProfileInfo(APIView):
