@@ -1,0 +1,300 @@
+{
+	"variables": [],
+	"info": {
+		"name": "akkaskhoone",
+		"_postman_id": "249e7e68-1a83-ab20-4ce6-5cf6c816bbfa",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login request server",
+			"request": {
+				"url": "http://192.168.10.211:80/login/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"169hamed@gmail.com\",\n\t\"password\": \"hamedhamed\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Login request",
+			"request": {
+				"url": "http://localhost:8000/login/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"a@a.com\",\n\t\"password\": \"sepehrsepehr\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "refresh token",
+			"request": {
+				"url": "http://192.168.10.211:80/login/refresh/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTUzNTI4MDQ0MiwianRpIjoiZjYwZTVmZDdkODVhNDE5Yjg2N2Q5MTE5NDA1NTkwNTAiLCJ1c2VyX2lkIjozfQ.FvXSCxTNuWPtnpCJ6PeE-kfYi9_2lEpJItfKfb40bpQ\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "friendchek",
+			"request": {
+				"url": "http://localhost:8000/checkcontacts/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1Mjg3NTM3LCJqdGkiOiIwMjc3NzVhNTZlNTI0YjdkOWNmNmM5NTRlMTBlMDNmZCIsInVzZXJfaWQiOjF9.pEVU6Rp3ILKlq4qU-BTuAdD9y8gBPjOXG-W8rkvTmVM",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"PhoneNumbers\": [\"09102012196\", \"123456789\",\"234567890\", \"929394959\"]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "follow unfollow",
+			"request": {
+				"url": "http://localhost:8000/follow/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1MzQ2NjY5LCJqdGkiOiJhMjUzMmUyZGU0ODI0NmU0YjQ1NWYxNzgzZTFlNTQ3OCIsInVzZXJfaWQiOjF9.2cVZZq6x0gSZCJkuae1cMox0uxrP3MqTZcy-Kgg8GcE",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"test\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "register second page",
+			"request": {
+				"url": "http://localhost:8000/register/completion/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1Mjc0NDM4LCJqdGkiOiI4NGU5YWU4ZWJlMDU0ZTAxYmQ3YWMzOGRkMDEwNDY3OCIsInVzZXJfaWQiOjE3fQ.atFLGNxRX4qCDMTeeA7aW7ksX_cAjwQH-Eej95qTUUo",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user\": {\n\t\t\"username\":\"span123\",\n\t\t\"password\":\"sepehrsepehr\"\n\t},\n\t\"name\":\"sss\",\n\t\"username\":\"sepep\",\n\t\"phoneNumber\":\"+9999999999\",\n\t\"bio\":\"asdawrbiabsdbal\"\n\t\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "register firstpage",
+			"request": {
+				"url": "http://localhost:8000/register/initial/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1Mjc0NDM4LCJqdGkiOiI4NGU5YWU4ZWJlMDU0ZTAxYmQ3YWMzOGRkMDEwNDY3OCIsInVzZXJfaWQiOjE3fQ.atFLGNxRX4qCDMTeeA7aW7ksX_cAjwQH-Eej95qTUUo",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"span123\",\n\t\"password\":\"sepehrsepehr\"\n\t\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "make a new post",
+			"request": {
+				"url": "http://localhost:8000/makepost/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1Mjc0NDM4LCJqdGkiOiI4NGU5YWU4ZWJlMDU0ZTAxYmQ3YWMzOGRkMDEwNDY3OCIsInVzZXJfaWQiOjE3fQ.atFLGNxRX4qCDMTeeA7aW7ksX_cAjwQH-Eej95qTUUo",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"description\":\"best day of my life\",\n\t\"image\":\"a.png\",\n\t\"tags\":\"tag1 tag2 tag3\"\n\t\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Profile request server",
+			"request": {
+				"url": "http://192.168.10.211:80/profile/info/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1MTk0ODYwLCJqdGkiOiI3ODY0NmUyOWU1Zjk0MDYxYWE5NjQyNWNhODU0NTkxOSIsInVzZXJfaWQiOjN9.EyP0v914WIW7rfxKAkJDsC4cBT245m5uVtNy0nwttJM",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"ali\",\n\t\"password\": \"psa123psa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Profile request posts",
+			"request": {
+				"url": "http://localhost:8000/profile/posts/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1MTkyNTI4LCJqdGkiOiJhNGU1ZjE3NDczODE0Y2VlYTU3YzczMTI2MTY0ZTZiYyIsInVzZXJfaWQiOjN9.ujO6fcBvVBsR_O67PvQQrRxnXUS9HFd4AAwgBnxZya4",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"ali\",\n\t\"password\": \"psa123psa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Profile password change",
+			"request": {
+				"url": "http://localhost:8000/profile/settings/",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1MjAyNjExLCJqdGkiOiJmM2ExNGU1ZTNkMDg0YTBmOTdmZmNmNTI5MWZjNDA0MyIsInVzZXJfaWQiOjN9.gbQ0lAH-FXCIsA8txOftX6p0jd437vQBOyLpIN5KCb0\n",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"oldPassword\":\"sepehrsepehr\",\n\t\"newPassword\": \"123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Profile info change",
+			"request": {
+				"url": "http://localhost:8000/profile/info/",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTM1MjY1MzQ4LCJqdGkiOiJlZGIxNTZkM2MzZTA0YWFhOTNhOThjZmU2NDY0ZWI3NiIsInVzZXJfaWQiOjE3fQ.Y8hLisUF1MoHzxM8KHukPzrLaJLh3lIxG0qBzecTZ3U",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"sepehrsepehr\",\n\t\"bio\": \"123\"\n\t\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
