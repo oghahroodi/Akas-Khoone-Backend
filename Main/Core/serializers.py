@@ -46,6 +46,11 @@ class PersonUsernameSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('username',)
 
+class PersonFollowPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ('username', 'phoneNumber',)
+
 
 class PersonSerializer(serializers.ModelSerializer):
 
