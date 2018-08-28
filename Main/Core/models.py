@@ -18,7 +18,7 @@ class Person(models.Model):
     accountCreationDate = models.DateTimeField(
         'date published', default=timezone.now)
     user_regex = RegexValidator(
-        regex=r"^[a-zA-Z0-9_]*$", message="Username can only contain numbers,charachters, _ and .")
+        regex=r"^[a-zA-Z0-9_.]*$", message="Username can only contain numbers,charachters, _ and .")
     username = models.CharField(
         validators=[user_regex], max_length=100, null=False, unique=True)
     postNumber = models.IntegerField(default=0)
@@ -27,6 +27,8 @@ class Person(models.Model):
     # store path of images to database for performance
     #picAddress = models.CharField(max_length=200, null=True)
 
+    def __str__(self):
+        return self.username
 
 class Post(models.Model):
     description = models.CharField(max_length=250, null=True)

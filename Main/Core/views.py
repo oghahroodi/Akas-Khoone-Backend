@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import *
-from .models import *
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
@@ -9,7 +8,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.permissions import AllowAny
 from .utilities import extractHashtags
-
 
 class ProfileInfo(APIView):
     def get(self, request):
@@ -112,7 +110,6 @@ class CheckContacts(APIView):
             except Person.DoesNotExist:
                 contactSituation.append({'phoneNumber': Number, 'status': contactState(2)})
         return Response(contactSituation, status=status.HTTP_200_OK)
-
 
 
 
