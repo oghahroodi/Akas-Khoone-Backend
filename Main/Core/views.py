@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import *
-from .models import *
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
@@ -9,7 +8,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.permissions import AllowAny
 from .utilities import extractHashtags
-
 
 class ProfileInfo(APIView):
     def get(self, request):
@@ -81,8 +79,6 @@ class CreateUser(APIView):
         serializer = PersonSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            a = token_obtain_pair(request)
-            print(a)
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -90,7 +86,6 @@ class CreateUser(APIView):
 class CheckUsername(APIView):
     permission_classes = (AllowAny,)
     def post(self, request):
-        print(request.data)
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             return JsonResponse({'status': 'ACCEPTED'}, status=status.HTTP_202_ACCEPTED)
@@ -115,8 +110,6 @@ class CheckContacts(APIView):
             except Person.DoesNotExist:
                 contactSituation.append({'phoneNumber': Number, 'status': contactState(2)})
         return Response(contactSituation, status=status.HTTP_200_OK)
-
-
 
 
 def contactState(index):

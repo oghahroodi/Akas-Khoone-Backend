@@ -1,33 +1,56 @@
 SSH alias config
-Add user team4 (Nk&dw2Bfy0w!n*dCn9#48a)
+
+Add user team4 (123456)
+
 disable login as root
+
 Config ssh
+
 Set time
+
 Open port 22222
+
 Close port 22
+
 Change ssh port to 22222
+
 Config selinux for port 22222
-Key#bug
-reduce nginx permission
-Run nginx
-Clone project
+
 install tuned
+
 systemctl start tuned
-systemctl enable tuned
-systemctl status tuned
-systemctl stop tuned
+
 tuned-adm active
-tuned-adm list
-tuned-adm  profile throughput-performance
-tuned-adm active
+
 tuned-adm recommend
+
 install uwsgi
-Disable nginx
-Run Django server on port 80
+
+install epel-release
+
+Create venv
+
+Clone project
+
+Change root pass
+
+Install nginx
+
+install python36-devel gcc -y
+
+install unicorn psycopg2
+
+gunicorn --bind 0.0.0.0:8000 Main.wsgi:application
+
+start gunicorn
+
+Config nginx
+
+Install mysql
 
 
 
 
-DB
-Nginx
+
+
 
