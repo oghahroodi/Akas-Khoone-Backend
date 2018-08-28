@@ -2,3 +2,5 @@ Django==2.1
 djangorestframework==3.8.2
 djangorestframework-simplejwt==3.2.3
 pyjwt==1.6.4
+Pillow==5.2.0
+pytz==2018.5
