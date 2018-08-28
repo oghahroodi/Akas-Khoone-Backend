@@ -7,13 +7,13 @@ from rest_framework.pagination import *
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.permissions import AllowAny
-from .utilities import extractHashtags
+
 
 class ProfileInfo(APIView):
     def get(self, request):
         userid = request.user.id
         person = Person.objects.get(user__id=userid)
-        serializer = PersonSerializer(person)
+        serializer = PersonInfoSerializer(person)
         return JsonResponse(serializer.data)
 
     def patch(self, request):
@@ -56,11 +56,12 @@ class ProfilePosts(generics.ListCreateAPIView):
         return Post.objects.filter(user=user)
 
     def post(self, request, *args, **kwargs):
+        tags = request.data.pop('tags')
         request.data['user'] = request.user.id
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
-            tags = extractHashtags(request.data['description'])
+            #tags = extractHashtags(request.data['description'])
             for t in tags:
                 try:
                     tag = Tag.objects.get(name=t)
@@ -79,6 +80,9 @@ class CreateUser(APIView):
         serializer = PersonSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            user = User.objects.get(username=request.data.get('user')['username'])
+            user.set_password(request.data.get('user')['password'])
+            user.save()
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
