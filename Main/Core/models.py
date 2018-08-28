@@ -36,7 +36,7 @@ class Post(models.Model):
     commentNumber = models.IntegerField(default=0)
     date = models.DateTimeField('date published', default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/%Y/%m/%d/')
+    #image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
 
 class Tag(models.Model):
