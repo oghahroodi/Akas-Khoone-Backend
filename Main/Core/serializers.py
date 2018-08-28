@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models import Post, Person, Relation
 from .models import *
 from django.contrib.auth.models import User
 import django.contrib.auth.password_validation as validators
@@ -8,13 +9,6 @@ class RelationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Relation
         fields = ('userFollowing', 'userFollowed')
-
-
-class PostSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Post
-        fields = ('user', 'description', 'likeNumber', 'commentNumber', 'image')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,11 +21,36 @@ class UserSerializer(serializers.ModelSerializer):
         if validators.validate_password(value) is None:
             return value
 
+    #def validate_username(self,value):
+
+
+    # def save(self, **kwargs):
+    #     user = User(username=self.validated_data['username'])
+    #     if validators.validate_password(self.validated_data['password'], user):
+    #         user.set_password(self.validated_data['password'])
+    #         user.save()
+    #         return user
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ('user', 'description', 'likeNumber', 'commentNumber', 'image')
+
+
+
+
+class PersonUsernameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ('username',)
 
 class PersonFollowPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ('username', 'phoneNumber',)
+
 
 class PersonSerializer(serializers.ModelSerializer):
 

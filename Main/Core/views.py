@@ -112,7 +112,6 @@ class CheckContacts(APIView):
         return Response(contactSituation, status=status.HTTP_200_OK)
 
 
-
 def contactState(index):
     if index == 0:
         return "friend"
