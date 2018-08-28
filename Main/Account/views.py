@@ -13,7 +13,7 @@ class ProfileInfo(APIView):
     def get(self, request):
         userid = request.user.id
         person = Person.objects.get(user__id=userid)
-        serializer = PersonSerializer(person)
+        serializer = PersonInfoSerializer(person)
         return JsonResponse(serializer.data)
 
     def patch(self, request):
@@ -46,6 +46,9 @@ class CreateUser(APIView):
         serializer = PersonSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            user = User.objects.get(username=request.data.get('user')['username'])
+            user.set_password(request.data.get('user')['password'])
+            user.save()
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

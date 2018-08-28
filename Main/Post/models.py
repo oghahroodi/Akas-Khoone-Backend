@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+
 class Post(models.Model):
     description = models.CharField(max_length=250, null=True)
     likeNumber = models.IntegerField(default=0)

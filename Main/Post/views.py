@@ -27,11 +27,11 @@ class ProfilePosts(generics.ListCreateAPIView):
         return Post.objects.filter(user=user)
 
     def post(self, request, *args, **kwargs):
+        tags = request.data.pop('tags')
         request.data['user'] = request.user.id
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
-            tags = extractHashtags(request.data['description'])
             for t in tags:
                 try:
                     tag = Tag.objects.get(name=t)

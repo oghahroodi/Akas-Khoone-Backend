@@ -35,6 +35,13 @@ class PersonFollowPageSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('username', 'phoneNumber',)
 
+
+class PersonInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ('username', 'name', 'bio', 'followerNumber', 'followingNumber', 'postNumber')
+
+
 class PersonSerializer(serializers.ModelSerializer):
 
     user = UserSerializer(required=True)

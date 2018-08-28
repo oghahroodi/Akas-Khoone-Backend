@@ -9,7 +9,6 @@ urlpatterns = [
     path('register/completion/', views.CreateUser.as_view()),
     path('register/initial/', views.CheckUsername.as_view()),
     path('profile/settings/', views.ChangePassword.as_view()),
-
     path('checkcontacts/', views.CheckContacts.as_view()),
     path('follow/', views.follow.as_view()),
     ]
