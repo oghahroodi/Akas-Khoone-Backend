@@ -6,7 +6,13 @@ def custom_exception_handler(exc, context):
 
     if response is not None:
         # print(response.data['detail'])
-        response.data['status'] = response.data['detail']
-        response.data['status_code'] = response.status_code
+        try:
+            response.data['status'] = response.data['detail']
+            response.data['status_code'] = response.status_code
+        except KeyError:
+            response.data['status'] = response.data['non_field_errors']
+            return response
+            
+        
         # print(response.data)
     return response
