@@ -7,10 +7,6 @@ from rest_framework.pagination import *
 from .utilities import extractHashtags
 
 
-
-
-
-
 class SetPagination(PageNumberPagination):
     page_size = 2
     page_size_query_param = 'page_size'

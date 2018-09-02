@@ -14,6 +14,7 @@ class Post(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=255, null=False, unique=True)
+    searchCount = models.IntegerField(default=0)
 
 
 class TagPost(models.Model):
