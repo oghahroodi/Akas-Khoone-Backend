@@ -8,6 +8,12 @@ from .utilities import extractHashtags
 
 
 
+class PostDetails(APIView):
+
+    def get(self, request, pk):
+        post = Post.objects.get(id=pk)
+        serializer = PostSerializer(post)
+        return JsonResponse(serializer.data)
 
 
 
@@ -40,6 +46,6 @@ class ProfilePosts(generics.ListCreateAPIView):
                     tag.save()
                 tagpost = TagPost(post=post, tag=tag)
                 tagpost.save()
-            return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
+                return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
