@@ -10,26 +10,25 @@ from rest_framework.views import APIView
 from .models import *
 from .serializers import *
 
-# class SearchTagsSuggestion(APIView):
 
-#     def post(self, request):
-#         tags = request.data['tags']
-#         tags = list(tags.split())
-#         data = {}
+class SearchTags(APIView):
+    def post(self, request):
+        tags = request.data['tags']
+        tags = list(tags.split())
+        query = Q()
+        for entry in tags:
+            query = query | Q(name__startswith=entry)
 
-#         # Tag.objects.filter(Q(name__startswith= | )
+        q = Tag.objects.filter(query).order_by('-searchCount')
+        serializer = TagSerializers(q, many=True)
+        result = {}
+        j = 0
+        for i in loads(dumps(serializer.data))[0:15]:
+            j += 1
+            result[j] = i
+        print(result)
 
-
-#         # reqCount = 0
-#         # for j in tags:
-#         #     reqCount += 1
-#         #     q = Tag.objects.all().filter(name__startswith=str(j))
-#         #     serializer = TagSerializers(q, many=True)
-#         #     resCount = 0
-#         #     for i in loads(dumps(serializer.data)):
-#         #         resCount+=1
-#         #         data[str(reqCount) + "_" + str(resCount)] = i
-#         return JsonResponse(data)
+        return JsonResponse(result)
 
 
 class SetPagination(PageNumberPagination):
@@ -45,24 +44,10 @@ class GetTagsPosts(generics.ListCreateAPIView):
     pagination_class = SetPagination
 
     def get_queryset(self, *args, **kwargs):
+
         t = self.kwargs.get(self.lookup_url_kwarg)
-        postIDs = loads(dumps(TagPostSerializers(TagPost.objects.filter(
-            tag=TagSerializers(Tag.objects.get(name=t)).data['id']), many=True).data))
-        # ans = Post.objects.filter(id__in=[i['post'] for i in postIDs])
-        # serializer = PostSerializer(ans, many=True)
-        # result = {}
-        # j = 0
-        # for i in loads(dumps(serializer.data)):
-        #     j+=1
-        #     result[str(j)] = i
-        # print (result)
-        return Post.objects.filter(id__in=[i['post'] for i in postIDs])
-
-        # +++++++++++++++++++++
-        # query = Q()
-        # for entry in postIDs:
-        #     i = Post.objects.filter(id=entry['post'])
-        #     query = query | Q(my_field__contains=entry)
-
-        # queryset = MyModel.objects.filter(query)
-        # +++++++++++++++++++++
+        tag = Tag.objects.get(name=t)
+        tag.incrementSearchCount()
+        tag.save()
+        postIDs = TagPost.objects.filter(tag=tag.returnID())
+        return Post.objects.filter(id__in=[i.returnPost() for i in postIDs])

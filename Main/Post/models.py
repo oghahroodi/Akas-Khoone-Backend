@@ -16,8 +16,17 @@ class Tag(models.Model):
     name = models.CharField(max_length=255, null=False, unique=True)
     searchCount = models.IntegerField(default=0)
 
+    def returnID(self):
+        return self.id
+
+    def incrementSearchCount(self):
+        self.searchCount += 1
+        return
+
 
 class TagPost(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
+    def returnPost(self):
+        return self.post.id
