@@ -16,17 +16,23 @@ class SearchTags(APIView):
         tags = request.data['tags']
         tags = list(tags.split())
         query = Q()
+        queryEq = Q()
         for entry in tags:
             query = query | Q(name__startswith=entry)
-
+            queryEq = queryEq | Q(name=entry)
         q = Tag.objects.filter(query).order_by('-searchCount')
+        qEq = Tag.objects.filter(queryEq)
         serializer = TagSerializers(q, many=True)
+        serializerEq = TagSerializers(qEq, many=True)
+        resultList = loads(dumps(serializer.data))[0:15]
+        resultListEq = loads(dumps(serializerEq.data))
+        resultFinalList = resultList + resultListEq
+        resultFinalList = list({v['id']: v for v in resultFinalList}.values())
         result = {}
         j = 0
-        for i in loads(dumps(serializer.data))[0:15]:
+        for i in resultFinalList:
             j += 1
             result[j] = i
-        print(result)
 
         return JsonResponse(result)
 
@@ -51,3 +57,29 @@ class GetTagsPosts(generics.ListCreateAPIView):
         tag.save()
         postIDs = TagPost.objects.filter(tag=tag.returnID())
         return Post.objects.filter(id__in=[i.returnPost() for i in postIDs])
+
+
+class SearchUsers(APIView):
+    def post(self, request):
+        user = request.data['user']
+        user = ''.join(user.split())
+        query = Q()
+        queryEq = Q()
+        query = Q(username__startswith=user)
+        queryEq = Q(username=user)
+        q = Person.objects.filter(query).order_by('-followerNumber')
+        qEq = Person.objects.filter(queryEq)
+        serializer = PersonSerializer(q, many=True)
+        serializerEq = PersonSerializer(qEq, many=True)
+        resultList = loads(dumps(serializer.data))[0:1]
+        resultListEq = loads(dumps(serializerEq.data))
+        resultFinalList = resultListEq + resultList
+        resultFinalList = list(
+            {v['username']: v for v in resultFinalList}.values())
+        result = {}
+        j = 0
+        for i in resultFinalList:
+            j += 1
+            result[j] = i
+
+        return JsonResponse(result)
