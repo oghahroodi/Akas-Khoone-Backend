@@ -21,5 +21,6 @@ urlpatterns = [
     #path('', include('Core.urls')),
     path('', include('Account.urls')),
     path('', include('Post.urls')),
+    path('', include('Search.urls')),
 
 ]
