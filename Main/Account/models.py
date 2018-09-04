@@ -34,3 +34,6 @@ class Person(models.Model):
 class Relation(models.Model):
     userFollowing = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', null=False)
     userFollowed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed', null=False)
+
+    def followed(self):
+        return self.userFollowed.id
