@@ -37,3 +37,5 @@ class Relation(models.Model):
 
     def followed(self):
         return self.userFollowed.id
+
+        

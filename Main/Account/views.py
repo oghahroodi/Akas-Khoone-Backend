@@ -11,7 +11,7 @@ from rest_framework.permissions import AllowAny
 
 class ProfileInfo(APIView):
     def get(self, request):
-        userid = request.user.id
+        
         person = Person.objects.get(user__id=userid)
         serializer = PersonInfoSerializer(person)
         return JsonResponse(serializer.data)
