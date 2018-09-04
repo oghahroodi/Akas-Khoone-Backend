@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import *
 from Account.models import *
+from Account.serializers import PersonSerializer
+from Account.models import Person
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
@@ -39,6 +41,11 @@ class ProfilePosts(generics.ListCreateAPIView):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
+            person = Person.objects.get(user__id=request.user.id)
+            serializer = PersonSerializer(person, data={'postNumber': person.postNumber+1}, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+            tags = tags.split()
             for t in tags:
                 try:
                     tag = Tag.objects.get(name=t)
