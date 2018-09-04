@@ -34,6 +34,7 @@ class ProfilePosts(generics.ListCreateAPIView):
             serializer = PersonSerializer(person, data={'postNumber': person.postNumber+1}, partial=True)
             if serializer.is_valid():
                 serializer.save()
+            tags = tags.split()
             for t in tags:
                 try:
                     tag = Tag.objects.get(name=t)
