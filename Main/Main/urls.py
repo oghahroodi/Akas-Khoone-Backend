@@ -23,5 +23,7 @@ urlpatterns = [
     path('', include('Post.urls')),
     path('', include('Search.urls')),
 
-    path('', include('Social.urls'))
+    path('', include('Social.urls')),
+
+    path('', include('Notification.urls')),
 ]
