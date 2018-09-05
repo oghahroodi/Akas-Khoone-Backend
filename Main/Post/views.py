@@ -24,7 +24,7 @@ class SetPagination(PageNumberPagination):
     max_page_size = 10
 
 
-class ProfilePosts(generics.ListCreateAPIView):
+class ProfilePosts(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = SetPagination
@@ -51,7 +51,7 @@ class ProfilePosts(generics.ListCreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class HomePosts(generics.ListCreateAPIView):
+class HomePosts(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = SetPagination
@@ -59,5 +59,6 @@ class HomePosts(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user.id
         postUsers = Relation.objects.filter(userFollowing_id=user)
+        print(postUsers)
         return Post.objects.filter(user__in=[i.followed()for i in postUsers]).order_by('date')
 

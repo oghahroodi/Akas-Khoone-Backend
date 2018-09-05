@@ -10,5 +10,7 @@ urlpatterns = [
     path('register/initial/', views.CheckUsername.as_view()),
     path('profile/settings/', views.ChangePassword.as_view()),
     path('checkcontacts/', views.CheckContacts.as_view()),
-    path('follow/', views.follow.as_view()),
+    path('accept/', views.Accept.as_view()),
+    path('followers/<int:pk>/<searched>/', views.Followers.as_view()),
+    path('followings/<int:pk>/<searched>/', views.Followings.as_view()),
     ]

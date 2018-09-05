@@ -2,7 +2,7 @@ from json import dumps, loads
 
 from django.db.models import Q
 from django.http import JsonResponse
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.pagination import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -34,7 +34,7 @@ class SearchTags(APIView):
             j += 1
             result[j] = i
 
-        return JsonResponse(result)
+        return JsonResponse(result, status=status.HTTP_200_OK)
 
 
 class SetPagination(PageNumberPagination):
@@ -43,7 +43,7 @@ class SetPagination(PageNumberPagination):
     max_page_size = 10
 
 
-class GetTagsPosts(generics.ListCreateAPIView):
+class GetTagsPosts(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     lookup_url_kwarg = "tag"
@@ -63,8 +63,6 @@ class SearchUsers(APIView):
     def post(self, request):
         user = request.data['user']
         user = ''.join(user.split())
-        query = Q()
-        queryEq = Q()
         query = Q(username__startswith=user)
         queryEq = Q(username=user)
         q = Person.objects.filter(query).order_by('-followerNumber')
@@ -82,4 +80,4 @@ class SearchUsers(APIView):
             j += 1
             result[j] = i
 
-        return JsonResponse(result)
+        return JsonResponse(result, status=status.HTTP_200_OK)

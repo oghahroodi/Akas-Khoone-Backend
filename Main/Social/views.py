@@ -12,7 +12,7 @@ class SetPagination(PageNumberPagination):
     max_page_size = 10
 
 
-class PostComments(generics.ListCreateAPIView):
+class PostComments(generics.ListAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     pagination_class = SetPagination

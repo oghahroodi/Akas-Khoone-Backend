@@ -1,5 +1,6 @@
+from django.db.models.query_utils import Q
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status, generics
 from .serializers import *
 from django.http import JsonResponse
 from rest_framework.pagination import *
@@ -19,7 +20,7 @@ class ProfileInfo(APIView):
     def patch(self, request):
         userid = request.user.id
         person = Person.objects.get(user__id=userid)
-        serializer = PersonSerializer(person, data=request.data,partial=True)
+        serializer = PersonSerializer(person, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -42,6 +43,7 @@ class ChangePassword(APIView):
 
 class CreateUser(APIView):
     permission_classes = (AllowAny,)
+
     def post(self, request):
         serializer = PersonSerializer(data=request.data)
         if serializer.is_valid():
@@ -55,6 +57,7 @@ class CreateUser(APIView):
 
 class CheckUsername(APIView):
     permission_classes = (AllowAny,)
+
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -65,7 +68,7 @@ class CheckUsername(APIView):
 class CheckContacts(APIView):
     def post(self, request):
         personNumbers = request.data.get("PhoneNumbers");
-        contactSituation=[]
+        contactSituation = []
         for Number in personNumbers:
             try:
                 contact = Person.objects.get(phoneNumber=Number)
@@ -82,22 +85,81 @@ class CheckContacts(APIView):
         return Response(contactSituation, status=status.HTTP_200_OK)
 
 
+class Accept(APIView):
 
-class follow(APIView):
     def post(self, request):
+
         personUser = request.data.get("username");
         try:
-            contact = Person.objects.get(username=personUser)
-            try:
-                relation = Relation.objects.get(userFollowing=request.user.id, userFollowed=contact.user.id)
-                relation.delete()
-                return Response({"status": "unfollowed"}, status=status.HTTP_200_OK)
-            except Relation.DoesNotExist:
-                serializer = RelationSerializer(data=makeRelation(request.user.id, contact.user.id))
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response({"status": "followed"}, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Person.DoesNotExist:
-            Response({"status": "user does not exist"}, status=status.HTTP_204_NO_CONTENT)
 
+            contact = Person.objects.get(username=personUser)
+            if contact.user.id!=self.request.user.id:
+                try:
+
+                    relation = Relation.objects.get(userFollowed=request.user.id, userFollowing=contact.user.id)
+                    return Response({"status": "already accepted"}, status=status.HTTP_200_OK)
+                except Relation.DoesNotExist:
+
+
+                    serializer = RelationSerializer(data=makeRelation(contact.user.id, request.user.id))
+                    if serializer.is_valid():
+                        serializer.save()
+                        followed = Person.objects.get(user_id=request.user.id)
+                        followed.incrementFollower()
+                        followed.save()
+                        follower = Person.objects.get(user_id=contact.user.id)
+                        follower.incrementFollowing()
+                        follower.save()
+                        return Response({"status": "followed"}, status=status.HTTP_201_CREATED)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+        except Person.DoesNotExist:
+            return Response({"status": "user does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class SetPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+
+
+class Followers(generics.ListAPIView):
+    queryset = Person.objects.all()
+    serializer_class = PersonInfoSerializer
+    pagination_class = SetPagination
+
+    def get_queryset(self):
+        user = Person.objects.get(user_id=self.kwargs.get('pk'))
+        if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.getID())
+                or self.kwargs.get('pk') == self.request.user.id):
+            followers = Relation.objects.filter(userFollowed_id=self.request.user.id)
+            print(followers)
+            if self.kwargs.get('searched') == "!":
+                return Person.objects.filter(user_id__in=[i.following() for i in followers])
+            else:
+
+                return Person.objects.filter(user_id__in=[i.following() for i in followers],
+                                             username__startswith=self.kwargs.get('searched'))
+        else:
+            return []
+
+
+class Followings(generics.ListAPIView):
+    queryset = Person.objects.all()
+    serializer_class = PersonInfoSerializer
+    pagination_class = SetPagination
+
+    def get_queryset(self):
+        user = Person.objects.get(user_id=self.kwargs.get('pk'))
+        if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.getID())
+                or self.kwargs.get('pk') == self.request.user.id):
+            following = Relation.objects.filter(userFollowing_id=self.request.user.id)
+            if self.kwargs.get('searched') == "!":
+                return Person.objects.filter(user_id__in=[i.followed() for i in following])
+            else:
+
+                return Person.objects.filter(user_id__in=[i.followed() for i in following],
+                                             username__startswith=self.kwargs.get('searched'))
+        else:
+            return []

@@ -30,6 +30,16 @@ class Person(models.Model):
     def __str__(self):
         return self.username
 
+    def incrementFollower(self):
+        self.followerNumber += 1
+        return
+
+    def incrementFollowing(self):
+        self.followingNumber += 1
+        return
+
+    def getID(self):
+        return self.id
 
 class Relation(models.Model):
     userFollowing = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', null=False)
@@ -37,3 +47,6 @@ class Relation(models.Model):
 
     def followed(self):
         return self.userFollowed.id
+
+    def following(self):
+        return self.userFollowing.id
