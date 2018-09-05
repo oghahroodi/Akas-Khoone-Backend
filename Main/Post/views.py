@@ -21,7 +21,7 @@ class PostDetails(APIView):
 
 
 class SetPagination(PageNumberPagination):
-    page_size = 2
+    page_size = 5
     page_size_query_param = 'page_size'
     max_page_size = 10
 
@@ -38,10 +38,11 @@ class ProfilePosts(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         tags = request.data.pop('tags')
         request.data['user'] = request.user.id
+        person = Person.objects.get(user__id=request.user.id)
+        request.data['profile'] = person
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
-            person = Person.objects.get(user__id=request.user.id)
             serializer = PersonSerializer(person, data={'postNumber': person.postNumber+1}, partial=True)
             if serializer.is_valid():
                 serializer.save()
@@ -56,6 +57,26 @@ class ProfilePosts(generics.ListCreateAPIView):
                 tagpost.save()
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProfileBoards(generics.ListCreateAPIView):
+    queryset = Board.objects.all()
+    serializer_class = BoardSerializer
+    pagination_class = SetPagination
+
+    def get_queryset(self):
+        userid = self.request.user.id
+        return Board.objects.filter(user__id=userid)
+
+
+class ProfileBoardPosts(generics.ListCreateAPIView):
+    serializer_class = PostSerializer
+    pagination_class = SetPagination
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        board = Board.objects.get(id=pk)
+        return board.posts.all()
 
 
 class HomePosts(generics.ListCreateAPIView):
