@@ -12,7 +12,8 @@ class PostDetails(APIView):
     def get(self, request, pk):
         post = Post.objects.get(id=pk)
         serializer = PostSerializer(post)
-        if (Relation.objects.filter(userFollowed_id=post.getUserID(), userFollowing_id= request.user.id)):
+        if (Relation.objects.filter(userFollowed_id=post.getUserID(), userFollowing_id= request.user.id)
+                or pk == self.request.user.id):
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         else:
             Response({"status": "Not_Authorized"}, status=status.HTTP_400_BAD_REQUEST)
@@ -59,6 +60,9 @@ class HomePosts(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user.id
         postUsers = Relation.objects.filter(userFollowing_id=user)
-        print(postUsers)
-        return Post.objects.filter(user__in=[i.followed()for i in postUsers]).order_by('date')
+        showableID=[]
+        for i in postUsers:
+            showableID.append(i.followed())
+        showableID.append(user)
+        return Post.objects.filter(user__in=[i for i in showableID]).order_by('date')
 
