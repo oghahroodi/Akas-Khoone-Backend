@@ -48,6 +48,28 @@ Config nginx
 
 Install mysql
 
+add user root
+
+create db akas_khoone
+
+Create user team
+
+
+
+?
+Backup
+Test backup
+Docker
+Ci/cd
+Log
+Redis
+
+
+
+
+
+
+
 
 
 
