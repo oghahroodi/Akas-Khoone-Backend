@@ -5,11 +5,11 @@ from Account.serializers import PersonInfoSerializer
 
 
 class PostSerializer(serializers.ModelSerializer):
-    Profile = PersonInfoSerializer(required=True)
+    profile = PersonInfoSerializer(required=True)
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'Profile', 'description', 'likeNumber', 'commentNumber', 'image', 'date')
+        fields = ('id', 'user', 'profile', 'description', 'likeNumber', 'commentNumber', 'image', 'date')
 
 
 class BoardSerializer(serializers.ModelSerializer):
