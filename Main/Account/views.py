@@ -20,7 +20,7 @@ class ProfileInfo(APIView):
     def patch(self, request):
         userid = request.user.id
         person = Person.objects.get(user__id=userid)
-        serializer = PersonSerializer(person, data=request.data, partial=True)
+        serializer = PersonChangeInfoSerializer(person, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

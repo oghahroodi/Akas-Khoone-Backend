@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from Account.models import Person
 
 class Post(models.Model):
     description = models.CharField(max_length=250, null=True)
@@ -10,6 +10,8 @@ class Post(models.Model):
     date = models.DateTimeField('date published', default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
+    Profile = models.ForeignKey(Person, on_delete=models.CASCADE)
+
 
     def getUserID(self):
         return self.user.id

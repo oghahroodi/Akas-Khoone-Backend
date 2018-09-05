@@ -41,6 +41,14 @@ class PersonInfoSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('username', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber')
+        # , 'profileImage'
+
+
+class PersonChangeInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ( 'name', 'bio', 'phoneNumber')
+        # , 'profileImage'
 
 
 class PersonSerializer(serializers.ModelSerializer):

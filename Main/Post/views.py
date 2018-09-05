@@ -12,11 +12,11 @@ class PostDetails(APIView):
     def get(self, request, pk):
         post = Post.objects.get(id=pk)
         serializer = PostSerializer(post)
-        if (Relation.objects.filter(userFollowed_id=post.getUserID(), userFollowing_id= request.user.id)
-                or pk == self.request.user.id):
+        if (Relation.objects.filter(userFollowed_id=post.getUserID(), userFollowing_id = request.user.id)
+                or post.getUserID() == self.request.user.id):
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         else:
-            Response({"status": "Not_Authorized"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "Not_Authorized"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SetPagination(PageNumberPagination):
