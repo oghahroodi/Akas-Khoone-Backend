@@ -36,11 +36,12 @@ class TagPost(models.Model):
     def returnPost(self):
         return self.post.id
 
+
 class Board(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     title = models.CharField(max_length=100, null=False)
     postNumber = models.IntegerField(default=0)
-
+    posts = models.ManyToManyField(Post, null=True)
 
 class BoardPost(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE)

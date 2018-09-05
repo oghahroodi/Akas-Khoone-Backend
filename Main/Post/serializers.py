@@ -11,3 +11,12 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id', 'user', 'Profile', 'description', 'likeNumber', 'commentNumber', 'image', 'date')
 
+
+class BoardSerializer(serializers.ModelSerializer):
+    posts = PostSerializer(many=True)
+    #posts = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all(), many=True)
+    #posts = serializerMethodField('get_limited')
+
+    class Meta:
+        model = Board
+        fields = ('title', 'postNumber', 'posts')

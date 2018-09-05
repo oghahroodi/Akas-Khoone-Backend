@@ -15,6 +15,7 @@ class ProfileInfo(APIView):
         userid = request.user.id
         person = Person.objects.get(user__id=userid)
         serializer = PersonInfoSerializer(person)
+        print(serializer.data)
         return JsonResponse(serializer.data)
 
     def patch(self, request):
@@ -25,6 +26,18 @@ class ProfileInfo(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OthersProfileInfo(APIView):
+    def get(self, request, pk):
+        userid = request.user.id
+        try:
+            Relation.objects.get(userFollowed=pk, userFollowing=userid)
+            person = Person.objects.get(user__id=pk)
+            serializer = PersonInfoSerializer(person)
+            return JsonResponse(serializer.data)
+        except Relation.DoesNotExist:
+            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class ChangePassword(APIView):
