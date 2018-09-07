@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
 from .utilities import extractHashtags
+from Notifications.producers import notif
 
 
 class PostDetails(APIView):
@@ -54,6 +55,7 @@ class ProfilePosts(generics.ListCreateAPIView):
                     tag.save()
                 tagpost = TagPost(post=post, tag=tag)
                 tagpost.save()
+            notif('post', request.user.id, serializer.id)
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

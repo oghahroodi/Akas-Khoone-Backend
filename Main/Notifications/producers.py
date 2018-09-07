@@ -18,6 +18,7 @@ def notif(kind, user, *args, **kwargs):
     if kind == 'like':
         pass
     elif kind == 'post':
-        conn.rpush('post', user)
+        p = kwargs.get('post')
+        conn.rpush('post', user+' ' + p)
     elif kind == 'followrequest':
         pass
