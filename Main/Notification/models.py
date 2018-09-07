@@ -1,3 +1,14 @@
 from django.db import models
 
-# Create your models here.
+
+class PostNotif(models.Model):
+
+    user = models.CharField(max_length=255)
+
+
+class LikeNotif(models.Model):
+    pass
+
+
+class FollowNotif(models.Model):
+    pass

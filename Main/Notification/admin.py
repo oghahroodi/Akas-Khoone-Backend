@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import  PostNotif,LikeNotif,FollowNotif
 
-# Register your models here.
+admin.site.register(PostNotif)
+admin.site.register(LikeNotif)
+admin.site.register(FollowNotif)

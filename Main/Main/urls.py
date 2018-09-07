@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from Notifications.producers import connect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +25,8 @@ urlpatterns = [
     path('', include('Search.urls')),
 
     path('', include('Social.urls')),
+    path('', include('Notification.urls'))
 
-    path('', include('Notification.urls')),
 ]
+
+connect()
