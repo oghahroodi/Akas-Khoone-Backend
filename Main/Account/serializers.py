@@ -40,14 +40,14 @@ class PersonInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ('username', 'name', 'bio', 'followerNumber',
-                  'followingNumber', 'postNumber', 'boardNumber')
+                  'followingNumber', 'postNumber', 'boardNumber', 'profileImage')
         # , 'profileImage'
 
 
 class PersonChangeInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ( 'name', 'bio', 'phoneNumber')
+        fields = ('name', 'bio', 'phoneNumber', 'profileImage')
         # , 'profileImage'
 
 
@@ -59,7 +59,7 @@ class PersonSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('user', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber',
-                  'phoneNumber', 'username'
+                  'phoneNumber', 'username', 'profileImage'
                   )
         # , 'profileImage'
 

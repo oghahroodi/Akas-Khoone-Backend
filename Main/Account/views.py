@@ -37,7 +37,8 @@ class OthersProfileInfo(APIView):
             serializer = PersonInfoSerializer(person)
             return JsonResponse(serializer.data)
         except Relation.DoesNotExist:
-            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+            return JsonResponse({"status": "شما اجازهی دست رسی به این صفحه را ندارید."},
+                                status=status.HTTP_401_UNAUTHORIZED)
 
 
 class ChangePassword(APIView):
@@ -51,7 +52,7 @@ class ChangePassword(APIView):
             user.save()
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({"status": "wrong password"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status": "رمز قدیمی اشتباه است."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateUser(APIView):
@@ -64,7 +65,7 @@ class CreateUser(APIView):
             user = User.objects.get(username=request.data.get('user')['username'])
             user.set_password(request.data.get('user')['password'])
             user.save()
-            return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
+            return JsonResponse({'status': 'ساخته شد.'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -74,7 +75,7 @@ class CheckUsername(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            return JsonResponse({'status': 'ACCEPTED'}, status=status.HTTP_202_ACCEPTED)
+            return JsonResponse({'status': 'یافته شد'}, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -110,7 +111,7 @@ class Accept(APIView):
                 try:
 
                     relation = Relation.objects.get(userFollowed=request.user.id, userFollowing=contact.user.id)
-                    return Response({"status": "already accepted"}, status=status.HTTP_200_OK)
+                    return Response({"status": "شما را قبلا دنبال کرده."}, status=status.HTTP_200_OK)
                 except Relation.DoesNotExist:
 
 
@@ -123,12 +124,12 @@ class Accept(APIView):
                         follower = Person.objects.get(user_id=contact.user.id)
                         follower.incrementFollowing()
                         follower.save()
-                        return Response({"status": "followed"}, status=status.HTTP_201_CREATED)
+                        return Response({"status": "به دنبال کننده های شما اضافه شد. "}, status=status.HTTP_201_CREATED)
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
         except Person.DoesNotExist:
-            return Response({"status": "user does not exist"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"status": "این کاربر وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class SetPagination(PageNumberPagination):

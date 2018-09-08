@@ -18,7 +18,7 @@ class PostDetails(APIView):
                 or post.getUserID() == self.request.user.id):
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"status": "شما اجازهی دست رسی به این صفحه را ندارید."}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class SetPagination(PageNumberPagination):
@@ -40,14 +40,13 @@ class ProfilePosts(generics.ListCreateAPIView):
         tags = request.data.pop('tags')
         request.data['user'] = request.user.id
         person = Person.objects.get(user__id=request.user.id)
-        request.data['profile'] = person
-        serializer = PostSerializer(data=request.data)
+        request.data['profile'] = person.id
+        serializer = PostCreateSerializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
-            serializer = PersonSerializer(person, data={'postNumber': person.postNumber+1}, partial=True)
-            if serializer.is_valid():
-                serializer.save()
+            person.incrementPosts()
             tags = tags.split()
+            # saving tags
             for t in tags:
                 try:
                     tag = Tag.objects.get(name=t)
@@ -56,7 +55,8 @@ class ProfilePosts(generics.ListCreateAPIView):
                     tag.save()
                 tagpost = TagPost(post=post, tag=tag)
                 tagpost.save()
-            return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
+
+            return JsonResponse({'status': 'ساخته شد.'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -93,5 +93,5 @@ class HomePosts(generics.ListAPIView):
         for i in postUsers:
             showableID.append(i.followed())
         showableID.append(user)
-        return Post.objects.filter(user__in=[i for i in showableID]).order_by('date')
+        return Post.objects.filter(user__in=[i for i in showableID]).order_by('-date')
 

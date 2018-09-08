@@ -10,12 +10,19 @@ class Post(models.Model):
     date = models.DateTimeField('date published', default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
-    Profile = models.ForeignKey(Person, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Person, on_delete=models.CASCADE)
 
 
     def getUserID(self):
         return self.user.id
 
+    def increamentLike(self):
+        self.likeNumber += 1
+        return
+
+    def increamentComment(self):
+        self.commentNumber += 1
+        return
 
 class Tag(models.Model):
     name = models.CharField(max_length=255, null=False, unique=True)
