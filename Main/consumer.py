@@ -32,15 +32,16 @@ def connectToRedis():
 connectToRedis()
 while(True):
 
-    task = connRedis.lpop('post')
-    task = task.split()
-    user = int(task[0])
-    p = int(task[1])
-    print(user)
-    print(p)
-    if user != None:
-        print(Relation.objects.all().filter(userFollowed=user))
-        for i in Relation.objects.all().filter(userFollowed=user):
-            pNotif = PostNotif(user=i.userFollowing, p=p)
-            pNotif.save()
-    time.sleep(10)
+    task = connRedis.blpop('post')
+    print(task)
+    # task = task.split()
+    # user = int(task[0])
+    # p = int(task[1])
+    # print(user)
+    # print(p)
+    # if user != None:
+    #     print(Relation.objects.all().filter(userFollowed=user))
+    #     for i in Relation.objects.all().filter(userFollowed=user):
+    #         pNotif = PostNotif(user=i.userFollowing, p=p)
+    #         pNotif.save()
+

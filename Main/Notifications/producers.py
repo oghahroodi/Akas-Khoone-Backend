@@ -1,6 +1,5 @@
 import redis
 
-
 def connect():
     try:
         global conn
@@ -19,6 +18,6 @@ def notif(kind, user, *args, **kwargs):
         pass
     elif kind == 'post':
         p = kwargs.get('post')
-        conn.rpush('post', user+' ' + p)
+        conn.rpush('post', user + ' ' + p)
     elif kind == 'followrequest':
         pass

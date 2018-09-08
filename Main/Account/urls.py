@@ -1,5 +1,4 @@
-
-from django.urls import path
+from django.urls import path, re_path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 urlpatterns = [
@@ -11,4 +10,6 @@ urlpatterns = [
     path('profile/settings/', views.ChangePassword.as_view()),
     path('checkcontacts/', views.CheckContacts.as_view()),
     path('follow/', views.follow.as_view()),
-    ]
+    path('verification/<str:token>/', views.validation),
+
+]
