@@ -49,7 +49,7 @@ class LikePosts(APIView):
             request.data['user'] = request.user.id
             request.data['post'] = pk
             serializer = LikeCreateSerializer(data=request.data)
-            post = Post.objects.get()
+            post = Post.objects.get(id=pk)
             post.increamentLike()
             post.save()
             userID = post.getUserID()
