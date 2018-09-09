@@ -47,6 +47,7 @@ class ProfilePosts(generics.ListCreateAPIView):
         if serializer.is_valid():
             post = serializer.save()
             person.incrementPosts()
+            person.save()
             tags = tags.split()
             # saving tags
             for t in tags:
