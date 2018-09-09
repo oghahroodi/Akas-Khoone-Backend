@@ -37,11 +37,18 @@ class PersonFollowPageSerializer(serializers.ModelSerializer):
 
 
 class PersonInfoSerializer(serializers.ModelSerializer):
+    email = serializers.SerializerMethodField()
+
     class Meta:
         model = Person
-        fields = ('username', 'name', 'bio', 'followerNumber',
+        fields = ('username', 'email', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber', 'boardNumber', 'profileImage')
         # , 'profileImage'
+
+    def get_email(self, obj):
+        user = User.objects.get(id=obj.user.id)
+        return user.username
+
 
 
 class PersonChangeInfoSerializer(serializers.ModelSerializer):
