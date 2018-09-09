@@ -53,7 +53,7 @@ class PersonChangeInfoSerializer(serializers.ModelSerializer):
 
 class PersonSerializer(serializers.ModelSerializer):
 
-    user = UserSerializer(required=True)
+    #user = UserSerializer(required=True)
 
     class Meta:
         model = Person
@@ -63,11 +63,11 @@ class PersonSerializer(serializers.ModelSerializer):
                   )
         # , 'profileImage'
 
-    def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        serializer = UserSerializer(data=user_data)
-        if serializer.is_valid():
-            user = serializer.save()
-            person, created = Person.objects.update_or_create(
-                user=user, **validated_data)
-            return person
+    # def create(self, validated_data):
+    #     user_data = validated_data.pop('user')
+    #     serializer = UserSerializer(data=user_data)
+    #     if serializer.is_valid():
+    #         user = serializer.save()
+    #         person, created = Person.objects.update_or_create(
+    #             user=user, **validated_data)
+    #         return person
