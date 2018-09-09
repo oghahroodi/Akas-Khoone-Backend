@@ -56,3 +56,8 @@ class Relation(models.Model):
 
     def following(self):
         return self.userFollowing.id
+
+class ForgetPassword(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField('date published', default=timezone.now)
+    code = models.CharField(max_length=11)

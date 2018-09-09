@@ -13,4 +13,7 @@ def contactState(index):
 def makeRelation(following,followed):
     return {'userFollowing': following, 'userFollowed':followed}
 
+def makeMail(code):
+    return "کد ورودی برای فراموشی رمز عبور:\n" + code
+
 

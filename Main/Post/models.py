@@ -12,6 +12,8 @@ class Post(models.Model):
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
     profile = models.ForeignKey(Person, on_delete=models.CASCADE)
 
+    def getID(self):
+        return self.id
 
     def getUserID(self):
         return self.user.id
@@ -48,7 +50,7 @@ class Board(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     title = models.CharField(max_length=100, null=False)
     postNumber = models.IntegerField(default=0)
-    posts = models.ManyToManyField(Post, null=True)
+    posts = models.ManyToManyField(Post, blank=True)
 
 class BoardPost(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE)

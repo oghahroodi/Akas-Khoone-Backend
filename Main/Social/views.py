@@ -39,13 +39,20 @@ class Comment(APIView):
 
 class LikePosts(APIView):
     def post(self, request, pk):
-        request.data['user'] = request.user.id
-        request.data['post'] = pk
-        serializer = LikeCreateSerializer(data=request.data)
-        post = Post.objects.get()
-        post.increamentLike()
-        post.save()
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse({'status': 'ساخته شد.'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            liked = Like.objects.get(user_id=request.user.id, post_id=pk)
+            liked.delete()
+            return JsonResponse({'status': 'دوست داشته نشد.'}, status=status.HTTP_200_OK)
+
+        except Like.DoesNotExist:
+            request.data['user'] = request.user.id
+            request.data['post'] = pk
+            serializer = LikeCreateSerializer(data=request.data)
+            post = Post.objects.get()
+            post.increamentLike()
+            post.save()
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse({'status': "دوست داشته شد."}, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

@@ -13,4 +13,6 @@ urlpatterns = [
     path('accept/', views.Accept.as_view()),
     path('followers/<int:pk>/<searched>/', views.Followers.as_view()),
     path('followings/<int:pk>/<searched>/', views.Followings.as_view()),
+    path('unfollow/', views.Unfollow.as_view()),
+    path('passwordforget/firstpage/', views.ForgetPasswordEmail.as_view()),
     ]

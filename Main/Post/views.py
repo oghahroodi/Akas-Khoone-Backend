@@ -2,13 +2,11 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import *
 from Account.models import *
-from Account.serializers import PersonSerializer
 from Account.models import Person
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
-from .utilities import extractHashtags
-
+from  Social.models import Like
 
 class PostDetails(APIView):
     def get(self, request, pk):
@@ -78,7 +76,7 @@ class ProfileBoardPosts(generics.ListCreateAPIView):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         board = Board.objects.get(id=pk)
-        return board.posts.all()
+        return board.posts.all().order_by('-date')
 
 
 class HomePosts(generics.ListAPIView):
@@ -93,5 +91,7 @@ class HomePosts(generics.ListAPIView):
         for i in postUsers:
             showableID.append(i.followed())
         showableID.append(user)
-        return Post.objects.filter(user__in=[i for i in showableID]).order_by('-date')
+        homePosts = Post.objects.filter(user__in=[i for i in showableID]).order_by('-date')
+        
+        return homePosts
 

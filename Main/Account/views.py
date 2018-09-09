@@ -1,3 +1,6 @@
+import json
+
+import requests
 from django.db.models.query_utils import Q
 from rest_framework.views import APIView
 from rest_framework import status, generics
@@ -8,6 +11,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from .utilities import *
 from rest_framework.permissions import AllowAny
+import os
+import binascii
 
 
 class ProfileInfo(APIView):
@@ -107,7 +112,7 @@ class Accept(APIView):
         try:
 
             contact = Person.objects.get(username=personUser)
-            if contact.user.id!=self.request.user.id:
+            if contact.user.id != self.request.user.id:
                 try:
 
                     relation = Relation.objects.get(userFollowed=request.user.id, userFollowing=contact.user.id)
@@ -177,3 +182,38 @@ class Followings(generics.ListAPIView):
                                              username__startswith=self.kwargs.get('searched'))
         else:
             return []
+
+
+class Unfollow(APIView):
+    def post(self, request):
+        personUser = request.data.get("username");
+        contact = Person.objects.get(username=personUser)
+        try:
+
+            relation = Relation.objects.get(userFollowing=request.user.id, userFollowed = contact.user.id)
+            relation.delete()
+            return Response({"status": "شما دیکر او را دنبال نمیکنید."}, status=status.HTTP_200_OK)
+        except Relation.DoesNotExist:
+            return Response({"status": "شما او را دنبال نمیکنید."}, status=status.HTTP_200_OK)
+
+
+class ForgetPasswordEmail(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        email = request.data.get('email')
+        try:
+            user = User.objects.get(username=email)
+            code = binascii.hexlify(os.urandom(5)).decode()
+            emailPayload = makeMail(code)
+            codeData = ForgetPassword(code=code, user=user)
+            codeData.save()
+            data = {"to": email, "body": emailPayload, "subject": "فراموشی رمز عبور"}
+            requests.post(url="http://192.168.10.66:80/api/send/mail", data=json.dumps(data),
+                          headers={"agent-key": "OOmIZh9U6m", "content-type": "application/json"})
+            return Response({"status": "ایمیل با موفقیت ارسال شد."}, status=status.HTTP_200_OK)
+
+        except User.DoesNotExist:
+            return Response({"status": "این کاربر وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
+
+
