@@ -16,5 +16,6 @@ urlpatterns = [
     path('unfollow/', views.Unfollow.as_view()),
     path('passwordforget/firstpage/', views.ForgetPasswordEmail.as_view()),
     path('passwordforget/secondpage/', views.ForgetPasswordTokenCheck.as_view()),
+    path('passwordforget/lastpage/', views.ForgetPasswordNewPassword.as_view()),
     path('verification/<str:token>/', views.validation),
     ]
