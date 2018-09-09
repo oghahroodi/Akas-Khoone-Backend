@@ -39,7 +39,7 @@ class ProfilePosts(generics.ListCreateAPIView):
         return Post.objects.filter(user=user)
 
     def post(self, request, *args, **kwargs):
-        tags = request.data.pop('tags')
+        tags = request.data.pop('tags')[0]
         request.data['user'] = request.user.id
         person = Person.objects.get(user__id=request.user.id)
         request.data['profile'] = person.id
@@ -57,7 +57,7 @@ class ProfilePosts(generics.ListCreateAPIView):
                     tag.save()
                 tagpost = TagPost(post=post, tag=tag)
                 tagpost.save()
-            notif('post', request.user.id, serializer.id)
+            # notif('post', request.user.id, serializer.id)
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

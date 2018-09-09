@@ -59,23 +59,38 @@ class CreateUser(APIView):
     permission_classes = (AllowAny,)
 
     def post(self, request):
-        username = request.data.pop('username')
-        password = request.data.pop('password')
-        print(request.data)
-        request.data['user'] = {"username": username, "password": password}
-        print(request.data)
-        serializer = PersonSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            username = request.data.get('user')['username']
-            user = User.objects.get(
-                username=username)
-            user.set_password(request.data.get('user')['password'])
+        username = request.data.pop('email')[0]
+        password = request.data.pop('password')[0]
+        userserializer = UserSerializer(data={"username": username, "password": password} )
+        if userserializer.is_valid():
+            user = userserializer.save()
+            userid = user.id
+            user.set_password(password)
             user.is_active = False
             user.save()
-            email(username)
-            return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            request.data['user'] = userid
+            personserializer = PersonSerializer(data=request.data)
+            if personserializer.is_valid():
+                person = personserializer.save()
+                email(username)
+                return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
+            user.delete()
+            return Response(personserializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(userserializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+        # serializer = PersonSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     username = request.data.get('user')['username']
+        #     user = User.objects.get(
+        #         username=username)
+        #     user.set_password(request.data.get('user')['password'])
+        #     user.is_active = False
+        #     user.save()
+        #     email(username)
+        #     return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
+        #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckUsername(APIView):
@@ -84,7 +99,7 @@ class CheckUsername(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            return JsonResponse({'status': 'یافته شد'}, status=status.HTTP_202_ACCEPTED)
+            return JsonResponse({'status': 'پذیرفته شد'}, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

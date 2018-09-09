@@ -5,6 +5,7 @@ from .serializer import *
 from .models import *
 from rest_framework import generics, status
 from rest_framework.pagination import *
+from Notifications.producers import notif
 
 
 
@@ -51,6 +52,8 @@ class LikePosts(APIView):
             post = Post.objects.get()
             post.increamentLike()
             post.save()
+            userID = post.getUserID()
+            notif('like', str(userID), p=str(pk))
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse({'status': "دوست داشته شد."}, status=status.HTTP_201_CREATED)

@@ -15,7 +15,8 @@ def connect():
 
 def notif(kind, user, *args, **kwargs):
     if kind == 'like':
-        pass
+        p = kwargs.get('p')
+        conn.rpush('like', user + ' '+ p)
     elif kind == 'post':
         p = kwargs.get('post')
         conn.rpush('post', user + ' ' + p)

@@ -32,7 +32,7 @@ def connectToRedis():
 connectToRedis()
 while(True):
 
-    task = connRedis.blpop('post')
+    task = connRedis.blpop('like')
     print(task)
     # task = task.split()
     # user = int(task[0])
