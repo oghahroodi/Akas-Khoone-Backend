@@ -11,34 +11,28 @@ from rest_framework.permissions import AllowAny
 import os, binascii, redis, requests, json
 
 
-class ProfileInfo(APIView):
+class GetID(APIView):
     def get(self, request):
         userid = request.user.id
-        person = Person.objects.get(user__id=userid)
+        return JsonResponse({"id": userid})
+
+
+class ProfileInfo(APIView):
+    def get(self, request, pk):
+        person = Person.objects.get(user__id=pk)
         serializer = PersonInfoSerializer(person)
         return JsonResponse(serializer.data)
 
-    def patch(self, request):
+    def patch(self, request, pk):
         userid = request.user.id
+        if pk != userid:
+            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
         person = Person.objects.get(user__id=userid)
         serializer = PersonChangeInfoSerializer(person, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class OthersProfileInfo(APIView):
-    def get(self, request, pk):
-        userid = request.user.id
-        try:
-            Relation.objects.get(userFollowed=pk, userFollowing=userid)
-            person = Person.objects.get(user__id=pk)
-            serializer = PersonInfoSerializer(person)
-            return JsonResponse(serializer.data)
-        except Relation.DoesNotExist:
-            return JsonResponse({"status": "شما اجازهی دست رسی به این صفحه را ندارید."},
-                                status=status.HTTP_401_UNAUTHORIZED)
 
 
 class ChangePassword(APIView):

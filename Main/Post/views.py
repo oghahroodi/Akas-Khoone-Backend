@@ -16,7 +16,7 @@ class PostDetails(APIView):
     def get(self, request, pk):
         post = Post.objects.get(id=pk)
         serializer = PostSerializer(post)
-        if (Relation.objects.filter(userFollowed_id=post.getUserID(), userFollowing_id = request.user.id)
+        if (Relation.objects.filter(userFollowed_id=post.getUserID(), userFollowing_id=request.user.id)
                 or post.getUserID() == self.request.user.id):
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         else:
@@ -38,9 +38,23 @@ class ProfilePosts(generics.ListCreateAPIView):
         user = self.request.user.id
         return Post.objects.filter(user=user)
 
+    def get(self, request, *args, **kwargs):
+        userid = self.request.user.id
+        pk = self.kwargs.get('pk')
+        try:
+            if pk != userid:
+                Relation.objects.get(userFollowed=pk, userFollowing=userid)
+            return self.list(request, *args, **kwargs)
+        except Relation.DoesNotExist:
+            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
     def post(self, request, *args, **kwargs):
-        tags = request.data.pop('tags')[0]
-        request.data['user'] = request.user.id
+        userid = self.request.user.id
+        pk = self.kwargs.get('pk')
+        if pk != userid:
+            return Response({"status": "شما اجازهی دست رسی به این صفحه را ندارید."}, status=status.HTTP_401_UNAUTHORIZED)
+        tags = request.data.pop('tags')
+        request.data['user'] = userid
         person = Person.objects.get(user__id=request.user.id)
         request.data['profile'] = person.id
         serializer = PostCreateSerializer(data=request.data)
@@ -63,18 +77,42 @@ class ProfilePosts(generics.ListCreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class ProfileBoards(generics.ListCreateAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
     pagination_class = SetPagination
 
+    def get_serializer_context(self):
+        return {'pk': self.request.user.id}
+
     def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        return Board.objects.filter(user__id=pk)
+
+    def get(self, request, *args, **kwargs):
         userid = self.request.user.id
-        return Board.objects.filter(user__id=userid)
+        pk = self.kwargs.get('pk')
+        try:
+            if pk != userid:
+                Relation.objects.get(userFollowed=pk, userFollowing=userid)
+            return self.list(request, *args, **kwargs)
+        except Relation.DoesNotExist:
+            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    def post(self, request, *args, **kwargs):
+        userid = self.request.user.id
+        pk = self.kwargs.get('pk')
+        if pk != userid:
+            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        request.data['user'] = userid
+        serializer = CreateBoardSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProfileBoardPosts(generics.ListCreateAPIView):
+class BoardDetails(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     pagination_class = SetPagination
 
@@ -82,6 +120,46 @@ class ProfileBoardPosts(generics.ListCreateAPIView):
         pk = self.kwargs.get('pk')
         board = Board.objects.get(id=pk)
         return board.posts.all().order_by('-date')
+        userid = self.request.user.id
+        boardid = self.kwargs.get('boardid')
+        board = Board.objects.get(id=boardid)
+        usersAllowed = [i.followed() for i in Relation.objects.filter(userFollowing__id=userid)]
+        usersAllowed.append(userid)
+        return board.posts.filter(user__in=usersAllowed)
+
+    def get(self, request, *args, **kwargs):
+        userid = self.request.user.id
+        boardid = self.kwargs.get('boardid')
+        pk = Board.objects.get(id=boardid).user.id
+        try:
+            if pk != userid:
+                Relation.objects.get(userFollowed=pk, userFollowing=userid)
+            return self.list(request, *args, **kwargs)
+        except Relation.DoesNotExist:
+            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    def patch(self, request, *args, **kwargs):
+        userid = self.request.user.id
+        boardid = self.kwargs.get('boardid')
+        board = Board.objects.get(id=boardid)
+        pk = board.user.id
+        if pk != userid:
+            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        serializer = CreateBoardSerializer(board, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({"status": "Added"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        userid = self.request.user.id
+        boardid = self.kwargs.get('boardid')
+        board = Board.objects.get(id=boardid)
+        pk = board.user.id
+        if pk != userid:
+            return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        board.delete()
+        return JsonResponse({"status": "Deleted"}, status=status.HTTP_200_OK)
 
 
 class HomePosts(generics.ListAPIView):
@@ -99,4 +177,3 @@ class HomePosts(generics.ListAPIView):
         homePosts = Post.objects.filter(user__in=[i for i in showableID]).order_by('-date')
 
         return homePosts
-

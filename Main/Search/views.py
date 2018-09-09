@@ -28,11 +28,12 @@ class SearchTags(APIView):
         resultListEq = loads(dumps(serializerEq.data))
         resultFinalList = resultList + resultListEq
         resultFinalList = list({v['id']: v for v in resultFinalList}.values())
-        result = {}
-        j = 0
-        for i in resultFinalList:
-            j += 1
-            result[j] = i
+        #print(resultFinalList)
+        result = {"results": resultFinalList}
+        # j = 0
+        # for i in resultFinalList:
+        #     j += 1
+        #     result[j] = i
 
         return JsonResponse(result, status=status.HTTP_200_OK)
 
@@ -79,10 +80,10 @@ class SearchUsers(APIView):
         resultFinalList = resultListEq + resultList
         resultFinalList = list(
             {v['username']: v for v in resultFinalList}.values())
-        result = {}
-        j = 0
-        for i in resultFinalList:
-            j += 1
-            result[j] = i
+        result = {"results": resultFinalList}
+        # j = 0
+        # for i in resultFinalList:
+        #     j += 1
+        #     result[j] = i
 
         return JsonResponse(result, status=status.HTTP_200_OK)
