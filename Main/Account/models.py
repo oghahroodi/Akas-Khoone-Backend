@@ -61,3 +61,11 @@ class ForgetPassword(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField('date published', default=timezone.now)
     code = models.CharField(max_length=11)
+    accepted = models.BooleanField(default=False)
+
+    def accept(self):
+        self.accepted = True
+        return
+
+    def getDate(self):
+        return self.date

@@ -1,24 +1,15 @@
-import json
-
-import requests
-from django.db.models.query_utils import Q
+from django.http.response import HttpResponse
 from rest_framework.views import APIView
 from rest_framework import status, generics
 from .serializers import *
-
 from django.http import JsonResponse
 from rest_framework.pagination import *
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from .utilities import *
 from rest_framework.permissions import AllowAny
-import os
-import binascii
-import redis
-import random
-import requests
-import json
-import string
+import os, binascii, redis, requests, json
+
 
 class ProfileInfo(APIView):
     def get(self, request):
@@ -68,6 +59,11 @@ class CreateUser(APIView):
     permission_classes = (AllowAny,)
 
     def post(self, request):
+        username = request.data.pop('username')
+        password = request.data.pop('password')
+        print(request.data)
+        request.data['user'] = {"username": username, "password": password}
+        print(request.data)
         serializer = PersonSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -227,20 +223,41 @@ class ForgetPasswordEmail(APIView):
             return Response({"status": "این کاربر وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
 
 
-def email(username):
-    red = redis.StrictRedis(
-        host='localhost', port=6379, password='', charset="utf-8", decode_responses=True)
-    random_token = ''.join([random.choice(string.ascii_uppercase + string.ascii_uppercase) for _ in range(50)])
-    red.hmset(random_token, {"email": username})
-    link = ("http://127.0.0.1:8000/verification/%s/" % random_token)
-    data = {
-        "to": username,
-        "body": "سلام \n برای کامل شدن ثبت نام روی لینک زیر کلیک کنید \n" + link,
-        "subject": "تایید ایمیل"
-    }
+class ForgetPasswordTokenCheck(APIView):
+    permission_classes = (AllowAny,)
+    def post(self, request):
+        email = request.data.get('email')
+        token = request.data.get('token')
+        user = User.objects.get(username=email)
+        try:
+            FP = ForgetPassword.objects.get(user_id=user.id,code=token)
+            if FP.getDate()-timezone.now() < timezone.datetime(minute=20):
+                FP.accept()
+                return Response({"status": "تایید شد."}, status=status.HTTP_200_OK)
 
-    requests.post(url="http://192.168.10.66:80/api/send/mail", data=json.dumps(data),
-                  headers={"agent-key": "OOmIZh9U6m", "content-type": "application/json"})
+            else:
+                FP.delete()
+                return Response({"status": "زمان کد پایان یافته."}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+        except ForgetPassword.DoesNotExist:
+            return Response({"status": "کد نامعتبر."}, status=status.HTTP_404_NOT_FOUND)
+
+class ForgetPasswordNewPassword(APIView):
+    permission_classes = (AllowAny,)
+    def post(self, request):
+        email = request.data.get('email')
+        user = User.objects.get(username=email)
+        newpassword = request.data.get('password')
+        try :
+            FP=ForgetPassword.objects.filter(user_id=user.id, accepted=True)
+            user.set_password(newpassword)
+            user.save()
+            FP.delete()
+            return Response({"status": "رمز شما تغییر کرد."}, status=status.HTTP_200_OK)
+
+        except ForgetPassword.DoesNotExist:
+            return Response({"status": "درخواست نا معتبر."}, status=status.HTTP_404_NOT_FOUND)
 
 
 def validation(request, token):

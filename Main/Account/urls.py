@@ -15,5 +15,6 @@ urlpatterns = [
     path('followings/<int:pk>/<searched>/', views.Followings.as_view()),
     path('unfollow/', views.Unfollow.as_view()),
     path('passwordforget/firstpage/', views.ForgetPasswordEmail.as_view()),
+    path('passwordforget/secondpage/', views.ForgetPasswordTokenCheck.as_view()),
     path('verification/<str:token>/', views.validation),
     ]
