@@ -55,8 +55,13 @@ class GetTagsPosts(generics.ListAPIView):
         tag = Tag.objects.get(name=t)
         tag.incrementSearchCount()
         tag.save()
+
+        userid = self.request.user.id
+        allowedUser = Relation.objects.filter(userFollowing_id=userid)
+
         postIDs = TagPost.objects.filter(tag=tag.returnID())
-        return Post.objects.filter(id__in=[i.returnPost() for i in postIDs])
+        print(i.followed() for i in allowedUser)
+        return Post.objects.filter(id__in=[i.returnPost() for i in postIDs], user_id__in=[i.followed() for i in allowedUser])
 
 
 class SearchUsers(APIView):

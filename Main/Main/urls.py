@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from Notifications.producers import connect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,5 +24,18 @@ urlpatterns = [
     path('', include('Post.urls')),
     path('', include('Search.urls')),
 
-    path('', include('Social.urls'))
+    path('', include('Social.urls')),
+    path('', include('Notification.urls'))
+
 ]
+
+connect()
+# key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
+# print ('key', [x for x in key])
+# iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
+# aes = AES.new(key, AES.MODE_CBC, iv)
+# data = 'hello world 1234' # <- 16 bytes
+# encd = aes.encrypt(data)
+# aes = AES.new(key, AES.MODE_CBC, iv)
+# decd = adec.decrypt(encd)
+# print (decd)

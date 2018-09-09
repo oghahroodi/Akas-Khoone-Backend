@@ -2,11 +2,15 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import *
 from Account.models import *
+from Account.serializers import PersonSerializer
 from Account.models import Person
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
 from  Social.models import Like
+from .utilities import extractHashtags
+from Notifications.producers import notif
+
 
 class PostDetails(APIView):
     def get(self, request, pk):
@@ -53,8 +57,8 @@ class ProfilePosts(generics.ListCreateAPIView):
                     tag.save()
                 tagpost = TagPost(post=post, tag=tag)
                 tagpost.save()
-
-            return JsonResponse({'status': 'ساخته شد.'}, status=status.HTTP_201_CREATED)
+            notif('post', request.user.id, serializer.id)
+            return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -92,6 +96,6 @@ class HomePosts(generics.ListAPIView):
             showableID.append(i.followed())
         showableID.append(user)
         homePosts = Post.objects.filter(user__in=[i for i in showableID]).order_by('-date')
-        
+
         return homePosts
 
