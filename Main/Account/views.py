@@ -240,7 +240,7 @@ class ForgetPasswordTokenCheck(APIView):
         user = User.objects.get(username=email)
         try:
             FP = ForgetPassword.objects.get(user_id=user.id,code=token)
-            if FP.getDate()-timezone.now() < timezone.datetime(minute=20):
+            if timezone.now()-FP.getDate() < timezone.timedelta(seconds=600):
                 FP.accept()
                 return Response({"status": "تایید شد."}, status=status.HTTP_200_OK)
 
