@@ -28,8 +28,9 @@ class PersonSerializer(serializers.ModelSerializer):
                   )
 
     def get_isfollowed(self, obj):
-        followeing = self.context.get('userid')
-        if (Relation.objects.get(userFollowing_id=followeing, userFollowed= obj.id)):
+        following = self.context.get('userid')
+        try:
+            Relation.objects.get(userFollowing=following, userFollowed= obj.user.id
             return True
-        else:
+        except Relation.DoesNotExist:
             return False
