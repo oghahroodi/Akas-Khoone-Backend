@@ -24,7 +24,7 @@ class PersonSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('id', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber',
-                  'phoneNumber', 'username','isfollowed'
+                  'phoneNumber', 'username', 'isfollowed', "profileImage"
                   )
 
     def get_isfollowed(self, obj):
