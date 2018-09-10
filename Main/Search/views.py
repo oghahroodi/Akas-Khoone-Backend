@@ -1,3 +1,4 @@
+
 from json import dumps, loads
 
 from django.db.models import Q
@@ -37,53 +38,3 @@ class SearchTags(APIView):
 
         return JsonResponse(result, status=status.HTTP_200_OK)
 
-
-class SetPagination(PageNumberPagination):
-    page_size = 2
-    page_size_query_param = 'page_size'
-    max_page_size = 10
-
-
-class GetTagsPosts(generics.ListAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    lookup_url_kwarg = "tag"
-    pagination_class = SetPagination
-
-    def get_queryset(self, *args, **kwargs):
-
-        t = self.kwargs.get(self.lookup_url_kwarg)
-        tag = Tag.objects.get(name=t)
-        tag.incrementSearchCount()
-        tag.save()
-
-        userid = self.request.user.id
-        allowedUser = Relation.objects.filter(userFollowing_id=userid)
-
-        postIDs = TagPost.objects.filter(tag=tag.returnID())
-        print(i.followed() for i in allowedUser)
-        return Post.objects.filter(id__in=[i.returnPost() for i in postIDs], user_id__in=[i.followed() for i in allowedUser])
-
-
-class SearchUsers(APIView):
-    def post(self, request):
-        user = request.data['user']
-        user = ''.join(user.split())
-        query = Q(username__startswith=user)
-        queryEq = Q(username=user)
-        q = Person.objects.filter(query).order_by('-followerNumber')
-        qEq = Person.objects.filter(queryEq)
-        serializer = PersonSerializer(q, many=True)
-        serializerEq = PersonSerializer(qEq, many=True)
-        resultList = loads(dumps(serializer.data))[0:1]
-        resultListEq = loads(dumps(serializerEq.data))
-        resultFinalList = resultListEq + resultList
-        resultFinalList = list(
-            {v['username']: v for v in resultFinalList}.values())
-        result = {"results": resultFinalList}
-        # j = 0
-        # for i in resultFinalList:
-        #     j += 1
-        #     result[j] = i
-
-        return JsonResponse(result, status=status.HTTP_200_OK)
