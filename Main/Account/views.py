@@ -219,7 +219,7 @@ class ForgetPasswordEmail(APIView):
         email = request.data.get('email')
         try:
             user = User.objects.get(username=email)
-            code = binascii.hexlify(os.urandom(5)).decode()
+            code = binascii.hexlify(os.urandom(2)).decode()
             emailPayload = makeMail(code)
             codeData = ForgetPassword(code=code, user=user)
             codeData.save()
