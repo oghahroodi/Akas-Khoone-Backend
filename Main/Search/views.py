@@ -15,6 +15,7 @@ class SearchTags(APIView):
     def post(self, request):
         tags = request.data['tags']
         tags = list(tags.split())
+        tags = [tags.lower() for i in tags]
         query = Q()
         queryEq = Q()
         for entry in tags:
@@ -22,8 +23,8 @@ class SearchTags(APIView):
             queryEq = queryEq | Q(name=entry)
         q = Tag.objects.filter(query).order_by('-searchCount')
         qEq = Tag.objects.filter(queryEq)
-        serializer = TagSerializers(q, many=True)
-        serializerEq = TagSerializers(qEq, many=True)
+        serializer = TagSerializers(q, many=True, context={"userid": request.user.id})
+        serializerEq = TagSerializers(qEq, many=True,context={"userid": request.user.id})
         resultList = loads(dumps(serializer.data))[0:15]
         resultListEq = loads(dumps(serializerEq.data))
         resultFinalList = resultList + resultListEq
@@ -74,8 +75,8 @@ class SearchUsers(APIView):
         queryEq = Q(username=user)
         q = Person.objects.filter(query).order_by('-followerNumber')
         qEq = Person.objects.filter(queryEq)
-        serializer = PersonSerializer(q, many=True)
-        serializerEq = PersonSerializer(qEq, many=True)
+        serializer = PersonSerializer(q, many=True, context={"userid": request.user.id})
+        serializerEq = PersonSerializer(qEq, many=True, context={"userid": request.user.id})
         resultList = loads(dumps(serializer.data))[0:1]
         resultListEq = loads(dumps(serializerEq.data))
         resultFinalList = resultListEq + resultList

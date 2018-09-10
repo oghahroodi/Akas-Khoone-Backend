@@ -18,10 +18,19 @@ class TagPostSerializers(serializers.ModelSerializer):
 
 
 class PersonSerializer(serializers.ModelSerializer):
+    isfollowed=serializers.SerializerMethodField()
 
     class Meta:
         model = Person
         fields = ('name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber',
-                  'phoneNumber', 'username'
+                  'phoneNumber', 'username','isfollowed'
                   )
+
+    def get_isfollowed(self, obj):
+        followeing = self.context.get('userid')
+        followed = Person.objects.get(username=obj.username)
+        if (Relation.objects.get(userFollowing_id=followeing, userFollowed= followed.id)):
+            return True
+        else:
+            return False

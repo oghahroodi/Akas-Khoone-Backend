@@ -62,6 +62,7 @@ class ProfilePosts(generics.ListCreateAPIView):
             person.incrementPosts()
             person.save()
             tags = tags.split()
+            tags = [tags.lower() for i in tags]
             # saving tags
             for t in tags:
                 try:
