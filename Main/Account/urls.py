@@ -17,5 +17,6 @@ urlpatterns = [
     path('passwordforget/secondpage/', views.ForgetPasswordTokenCheck.as_view()),
     path('passwordforget/lastpage/', views.ForgetPasswordNewPassword.as_view()),
     path('verification/<str:token>/', views.validation),
-    path('getid', views.GetID.as_view())
+    path('getid', views.GetID.as_view()),
+    path('invitation/', views.FriendInvite.as_view()),
     ]

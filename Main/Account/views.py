@@ -281,3 +281,17 @@ def validation(request, token):
     user.is_active = True
     user.save()
     return HttpResponse()
+class FriendInvite(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        person=Person.objects.get(user_id=request.user.id)
+        data = {"to": email, "body": {person.name +"شمارا به نرم افزار عکاس خونه دعوت کرده است"},
+                "subject": "عکاس خونه"}
+
+        requests.post(url="http://192.168.10.66:80/api/send/mail", data=json.dumps(data),
+                      headers={"agent-key": "OOmIZh9U6m", "content-type": "application/json"})
+
+        return Response({"status": "ایمیل با موفقیت ارسال شد."}, status=status.HTTP_200_OK)
+
+
+
