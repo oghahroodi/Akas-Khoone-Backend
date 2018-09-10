@@ -53,7 +53,7 @@ class ProfilePosts(generics.ListCreateAPIView):
         pk = self.kwargs.get('pk')
         if pk != userid:
             return Response({"status": "شما اجازهی دست رسی به این صفحه را ندارید."}, status=status.HTTP_401_UNAUTHORIZED)
-        tags = request.data.pop('tags')
+        tags = request.data.pop('tags')[0]
         request.data['user'] = userid
         person = Person.objects.get(user__id=request.user.id)
         request.data['profile'] = person.id
