@@ -9,12 +9,12 @@ def connectToRedis():
         global connRedis
         connRedis = redis.StrictRedis(
             host='localhost', port=6379, password='', charset="utf-8", decode_responses=True)
-        print(connRedis)
-        connRedis.ping()
-        print('Connected!')
+#        print(connRedis)
+#        connRedis.ping()
+#        print('Connected!')
     except Exception as ex:
-        print('Error:', ex)
-        exit('Failed to connect, terminating.')
+#        print('Error:', ex)
+        exit()
 
 
 connectToRedis()
