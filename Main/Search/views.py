@@ -99,6 +99,6 @@ class TrendingTags(APIView):
         q = Tag.objects.all().order_by('-searchCount')
         serializer = TagSerializers(q, many=True)
         resultList = loads(dumps(serializer.data))[0:15]
-        result = {"results": result}
+        result = {"results": resultList}
 
         return JsonResponse(result, status=status.HTTP_200_OK)
