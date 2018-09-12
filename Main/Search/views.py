@@ -15,7 +15,7 @@ class SearchTags(APIView):
     def post(self, request):
         tags = request.data['tags']
         tags = list(tags.split())
-        tags = [tags.lower() for i in tags]
+        tags = [i.lower() for i in tags]
         query = Q()
         queryEq = Q()
         for entry in tags:
