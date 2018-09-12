@@ -31,6 +31,10 @@ class PersonSerializer(serializers.ModelSerializer):
         following = self.context.get('userid')
         try:
             Relation.objects.get(userFollowing=following, userFollowed=obj.user.id)
-            return True
+            return 'following'
         except Relation.DoesNotExist:
-            return False
+            try:
+                FollowRequest.objects.get(userFollowing=following, userFollowed=obj.user.id)
+                return 'requested'
+            except Relation.DoesNotExist:
+                return "notfollowed"

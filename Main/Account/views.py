@@ -105,6 +105,9 @@ class CheckContacts(APIView):
         for email in emails:
             try:
                 contact = User.objects.get(username=email["email"])
+                email['id'] = contact.id
+                email['username'] = Person.objects.get(user_id=contact.id).username
+
                 if contact.id != request.user.id:
                     try:
                         relation = Relation.objects.get(
@@ -112,16 +115,18 @@ class CheckContacts(APIView):
                         # contactSituation.append({'email': email,
                         #                          'id': contact.id,
                         #                          'status': contactState(0)})
-                        email['id'] = contact.id
                         email['status'] = contactState(0)
-                        email['username'] = Person.objects.get(user_id=contact.id).username
                     except Relation.DoesNotExist:
                         # contactSituation.append({'email': email,
                         #                          'id': contact.id,
                         #                          'status': contactState(1)})
-                        email['id'] = contact.id
-                        email['status'] = contactState(1)
-                        email['username'] = Person.objects.get(user_id=contact.id).username
+                        try:
+                            req = FollowRequest.objects.get(
+                                userFollowing=request.user.id, userFollowed=contact.id)
+                            email['status'] = contactState(3)
+                        except FollowRequest.DoesNotExist:
+                            email['status'] = contactState(1)
+
 
             except User.DoesNotExist:
                 # contactSituation.append(

@@ -14,6 +14,8 @@ def contactState(index):
         return "registered"
     if index == 2:
         return "notregistered"
+    if index == 3:
+        return "requested"
 
 def makeRelation(following,followed):
     return {'userFollowing': following, 'userFollowed':followed}
