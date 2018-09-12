@@ -78,11 +78,9 @@ class SearchUsers(APIView):
         queryEq = Q(username=user)
         q = Person.objects.filter(query).order_by('-followerNumber')
         qEq = Person.objects.filter(queryEq)
-        serializer = PersonSerializer(
-            q, many=True, context={"userid": request.user.id})
-        serializerEq = PersonSerializer(qEq, many=True, context={
-                                        "userid": request.user.id})
-        resultList = loads(dumps(serializer.data))[0:1]
+        serializer = PersonSerializer(q, many=True, context={"userid": request.user.id})
+        serializerEq = PersonSerializer(qEq, many=True, context={"userid": request.user.id})
+        resultList = loads(dumps(serializer.data))[0:15]
         resultListEq = loads(dumps(serializerEq.data))
         resultFinalList = resultListEq + resultList
         resultFinalList = list(

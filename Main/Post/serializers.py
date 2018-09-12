@@ -7,8 +7,9 @@ from Social.models import Like
 
 
 class PostSerializer(serializers.ModelSerializer):
-    profile = PersonInfoSerializer(required=True)
+    #profile = PersonInfoSerializer(required=True)
     isLiked = serializers.SerializerMethodField()
+    profile = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -19,6 +20,9 @@ class PostSerializer(serializers.ModelSerializer):
             return True
         else:
             return False
+
+    def get_profile(self, obj):
+        return PersonInfoSerializer(Person.objects.get(user_id=obj.user.id)).data
 
 
 class BoardSerializer(serializers.ModelSerializer):
@@ -46,7 +50,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'profile', 'description', 'likeNumber', 'commentNumber', 'image', 'date')
+        fields = ('user', 'description', 'image')
 
 
 
