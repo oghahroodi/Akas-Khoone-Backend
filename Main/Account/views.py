@@ -104,26 +104,30 @@ class CheckContacts(APIView):
         for email in emails:
             try:
                 contact = User.objects.get(username=email["email"])
-                try:
-                    relation = Relation.objects.get(
-                        userFollowing=request.user.id, userFollowed=contact.id)
-                    # contactSituation.append({'email': email,
-                    #                          'id': contact.id,
-                    #                          'status': contactState(0)})
-                    email['id'] = contact.id
-                    email['status'] = contactState(0)
-                except Relation.DoesNotExist:
-                    # contactSituation.append({'email': email,
-                    #                          'id': contact.id,
-                    #                          'status': contactState(1)})
-                    email['id'] = contact.id
-                    email['status'] = contactState(1)
+                if contact.id != request.user.id:
+                    try:
+                        relation = Relation.objects.get(
+                            userFollowing=request.user.id, userFollowed=contact.id)
+                        # contactSituation.append({'email': email,
+                        #                          'id': contact.id,
+                        #                          'status': contactState(0)})
+                        email['id'] = contact.id
+                        email['status'] = contactState(0)
+                        email['username'] = Person.objects.get(user_id=contact.id).username
+                    except Relation.DoesNotExist:
+                        # contactSituation.append({'email': email,
+                        #                          'id': contact.id,
+                        #                          'status': contactState(1)})
+                        email['id'] = contact.id
+                        email['status'] = contactState(1)
+                        email['username'] = Person.objects.get(user_id=contact.id).username
 
             except User.DoesNotExist:
                 # contactSituation.append(
                 #     {'email': email, 'status': contactState(2)})
                 email['status'] = contactState(2)
                 email['id'] = -1
+                email['username'] = ""
 
         return Response({"emails": emails}, status=status.HTTP_200_OK)
 
@@ -214,8 +218,13 @@ class Unfollow(APIView):
         contact = Person.objects.get(username=personUser)
         try:
 
-            relation = Relation.objects.get(userFollowing=request.user.id, userFollowed = contact.user.id)
+            relation = Relation.objects.get(userFollowing=request.user.id, userFollowed=contact.user.id)
             relation.delete()
+            contact.decreseFollower()
+            contact.save()
+            person = Person.objects.get(user_id=request.user.id)
+            person.decreseFollowing()
+            person.save()
             return Response({"status": "شما دیکر او را دنبال نمیکنید."}, status=status.HTTP_200_OK)
         except Relation.DoesNotExist:
             return Response({"status": "شما او را دنبال نمیکنید."}, status=status.HTTP_200_OK)
@@ -261,6 +270,7 @@ class ForgetPasswordTokenCheck(APIView):
         except ForgetPassword.DoesNotExist:
             return Response({"status": "کد نامعتبر."}, status=status.HTTP_404_NOT_FOUND)
 
+
 class ForgetPasswordNewPassword(APIView):
     permission_classes = (AllowAny,)
     def post(self, request):
@@ -290,6 +300,8 @@ def validation(request, token):
     user.is_active = True
     user.save()
     return HttpResponse()
+
+
 class FriendInvite(APIView):
     def post(self, request):
         email = request.data.get('email')

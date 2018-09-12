@@ -31,6 +31,14 @@ class Person(models.Model):
     def __str__(self):
         return self.username
 
+    def decreseFollower(self):
+        self.followerNumber += -1
+        return
+
+    def decreseFollowing(self):
+        self.followingNumber += -1
+        return
+
     def incrementFollower(self):
         self.followerNumber += 1
         return
