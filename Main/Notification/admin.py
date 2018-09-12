@@ -1,6 +1,4 @@
 from django.contrib import admin
-from .models import  PostNotif,LikeNotif,FollowNotif
+from .models import Notif
 
-admin.site.register(PostNotif)
-admin.site.register(LikeNotif)
-admin.site.register(FollowNotif)
+admin.site.register(Notif)

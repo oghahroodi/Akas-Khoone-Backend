@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from Notifications.producers import connect
+from Notification.producers import connect
 
 urlpatterns = [
     path('admin/', admin.site.urls),

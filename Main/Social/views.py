@@ -5,9 +5,8 @@ from .serializer import *
 from .models import *
 from rest_framework import generics, status
 from rest_framework.pagination import *
-from Notifications.producers import notif
-
-
+from Notification.producers import notif
+from django.utils import timezone
 
 
 class SetPagination(PageNumberPagination):
@@ -33,7 +32,9 @@ class Comment(APIView):
         post.increamentComment()
         post.save()
         if serializer.is_valid():
-            serializer.save()
+            comment = serializer.save()
+            notif(kind='comment', doer=request.user.id,
+                  entity=request.data['post'], date=comment.date)
             return JsonResponse({'status': 'ساخته شد.'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -42,6 +43,9 @@ class LikePosts(APIView):
     def post(self, request, pk):
         try:
             liked = Like.objects.get(user_id=request.user.id, post_id=pk)
+            post = Post.objects.get(id=pk)
+            post.decrease()
+            post.save()
             liked.delete()
             return JsonResponse({'status': 'دوست داشته نشد.'}, status=status.HTTP_200_OK)
 
@@ -53,9 +57,14 @@ class LikePosts(APIView):
             post.increamentLike()
             post.save()
             userID = post.getUserID()
-            notif('like', str(userID), p=str(pk))
             if serializer.is_valid():
-                serializer.save()
+                like = serializer.save()
+                notif(kind='like', doer=request.user.id,
+                      entity=pk, date=like.date)
                 return JsonResponse({'status': "دوست داشته شد."}, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# class FollowRequest(APIView):
+#     def post(self, request):
+#         notif(kind='followrequest', doer=request.user.id, target=)

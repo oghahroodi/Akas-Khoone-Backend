@@ -8,7 +8,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from .utilities import *
 from rest_framework.permissions import AllowAny
-import os, binascii, redis, requests, json
+import os
+import binascii
+import redis
+import requests
+import json
 
 
 class GetID(APIView):
@@ -28,7 +32,8 @@ class ProfileInfo(APIView):
         if pk != userid:
             return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
         person = Person.objects.get(user__id=userid)
-        serializer = PersonChangeInfoSerializer(person, data=request.data, partial=True)
+        serializer = PersonChangeInfoSerializer(
+            person, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -55,7 +60,8 @@ class CreateUser(APIView):
     def post(self, request):
         username = request.data.pop('email')[0]
         password = request.data.pop('password')[0]
-        userserializer = UserSerializer(data={"username": username, "password": password} )
+        userserializer = UserSerializer(
+            data={"username": username, "password": password})
         if userserializer.is_valid():
             user = userserializer.save()
             userid = user.id
@@ -72,7 +78,6 @@ class CreateUser(APIView):
             return Response(personserializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(userserializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
         # serializer = PersonSerializer(data=request.data)
         # if serializer.is_valid():
         #     serializer.save()
@@ -84,7 +89,7 @@ class CreateUser(APIView):
         #     user.save()
         #     email(username)
         #     return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
-        #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckUsername(APIView):
@@ -123,19 +128,20 @@ class Accept(APIView):
 
     def post(self, request):
 
-        personUser = request.data.get("username");
+        personUser = request.data.get("username")
         try:
 
             contact = Person.objects.get(username=personUser)
             if contact.user.id != self.request.user.id:
                 try:
 
-                    relation = Relation.objects.get(userFollowed=request.user.id, userFollowing=contact.user.id)
+                    relation = Relation.objects.get(
+                        userFollowed=request.user.id, userFollowing=contact.user.id)
                     return Response({"status": "شما را قبلا دنبال کرده."}, status=status.HTTP_200_OK)
                 except Relation.DoesNotExist:
 
-
-                    serializer = RelationSerializer(data=makeRelation(contact.user.id, request.user.id))
+                    serializer = RelationSerializer(
+                        data=makeRelation(contact.user.id, request.user.id))
                     if serializer.is_valid():
                         serializer.save()
                         followed = Person.objects.get(user_id=request.user.id)
@@ -146,7 +152,6 @@ class Accept(APIView):
                         follower.save()
                         return Response({"status": "به دنبال کننده های شما اضافه شد. "}, status=status.HTTP_201_CREATED)
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
         except Person.DoesNotExist:
             return Response({"status": "این کاربر وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
@@ -167,7 +172,8 @@ class Followers(generics.ListAPIView):
         user = Person.objects.get(user_id=self.kwargs.get('pk'))
         if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.getID())
                 or self.kwargs.get('pk') == self.request.user.id):
-            followers = Relation.objects.filter(userFollowed_id=self.request.user.id)
+            followers = Relation.objects.filter(
+                userFollowed_id=self.request.user.id)
             print(followers)
             if self.kwargs.get('searched') == "!":
                 return Person.objects.filter(user_id__in=[i.following() for i in followers])
@@ -188,7 +194,8 @@ class Followings(generics.ListAPIView):
         user = Person.objects.get(user_id=self.kwargs.get('pk'))
         if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.getID())
                 or self.kwargs.get('pk') == self.request.user.id):
-            following = Relation.objects.filter(userFollowing_id=self.request.user.id)
+            following = Relation.objects.filter(
+                userFollowing_id=self.request.user.id)
             if self.kwargs.get('searched') == "!":
                 return Person.objects.filter(user_id__in=[i.followed() for i in following])
             else:
@@ -201,11 +208,12 @@ class Followings(generics.ListAPIView):
 
 class Unfollow(APIView):
     def post(self, request):
-        personUser = request.data.get("username");
+        personUser = request.data.get("username")
         contact = Person.objects.get(username=personUser)
         try:
 
-            relation = Relation.objects.get(userFollowing=request.user.id, userFollowed = contact.user.id)
+            relation = Relation.objects.get(
+                userFollowing=request.user.id, userFollowed=contact.user.id)
             relation.delete()
             return Response({"status": "شما دیکر او را دنبال نمیکنید."}, status=status.HTTP_200_OK)
         except Relation.DoesNotExist:
@@ -223,7 +231,8 @@ class ForgetPasswordEmail(APIView):
             emailPayload = makeMail(code)
             codeData = ForgetPassword(code=code, user=user)
             codeData.save()
-            data = {"to": email, "body": emailPayload, "subject": "فراموشی رمز عبور"}
+            data = {"to": email, "body": emailPayload,
+                    "subject": "فراموشی رمز عبور"}
             requests.post(url="http://192.168.10.66:80/api/send/mail", data=json.dumps(data),
                           headers={"agent-key": "OOmIZh9U6m", "content-type": "application/json"})
             return Response({"status": "ایمیل با موفقیت ارسال شد."}, status=status.HTTP_200_OK)
@@ -234,12 +243,13 @@ class ForgetPasswordEmail(APIView):
 
 class ForgetPasswordTokenCheck(APIView):
     permission_classes = (AllowAny,)
+
     def post(self, request):
         email = request.data.get('email')
         token = request.data.get('token')
         user = User.objects.get(username=email)
         try:
-            FP = ForgetPassword.objects.get(user_id=user.id,code=token)
+            FP = ForgetPassword.objects.get(user_id=user.id, code=token)
             if timezone.now()-FP.getDate() < timezone.timedelta(seconds=600):
                 FP.accept()
                 return Response({"status": "تایید شد."}, status=status.HTTP_200_OK)
@@ -248,18 +258,19 @@ class ForgetPasswordTokenCheck(APIView):
                 FP.delete()
                 return Response({"status": "زمان کد پایان یافته."}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-
         except ForgetPassword.DoesNotExist:
             return Response({"status": "کد نامعتبر."}, status=status.HTTP_404_NOT_FOUND)
 
+
 class ForgetPasswordNewPassword(APIView):
     permission_classes = (AllowAny,)
+
     def post(self, request):
         email = request.data.get('email')
         user = User.objects.get(username=email)
         newpassword = request.data.get('password')
-        try :
-            FP=ForgetPassword.objects.filter(user_id=user.id, accepted=True)
+        try:
+            FP = ForgetPassword.objects.filter(user_id=user.id, accepted=True)
             user.set_password(newpassword)
             user.save()
             FP.delete()
@@ -281,17 +292,16 @@ def validation(request, token):
     user.is_active = True
     user.save()
     return HttpResponse()
+
+
 class FriendInvite(APIView):
     def post(self, request):
         email = request.data.get('email')
-        person=Person.objects.get(user_id=request.user.id)
-        data = {"to": email, "body": {person.name +"شمارا به نرم افزار عکاس خونه دعوت کرده است"},
+        person = Person.objects.get(user_id=request.user.id)
+        data = {"to": email, "body": {person.name + "شمارا به نرم افزار عکاس خونه دعوت کرده است"},
                 "subject": "عکاس خونه"}
 
         requests.post(url="http://192.168.10.66:80/api/send/mail", data=json.dumps(data),
                       headers={"agent-key": "OOmIZh9U6m", "content-type": "application/json"})
 
         return Response({"status": "ایمیل با موفقیت ارسال شد."}, status=status.HTTP_200_OK)
-
-
-

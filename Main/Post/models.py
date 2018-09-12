@@ -22,6 +22,10 @@ class Post(models.Model):
         self.likeNumber += 1
         return
 
+    def decrease(self):
+        self.likeNumber += -1
+        return
+
     def increamentComment(self):
         self.commentNumber += 1
         return

@@ -1,19 +1,7 @@
-import sqlite3
+import json
+
 import redis
-from sqlite3 import Error
-import time
-from django.conf import settings
-import os
-import django
-os.environ.setdefault(
-    "DJANGO_SETTINGS_MODULE",
-    "Main.settings"
-)
-django.setup()
-from Notification.models import *
-from Post.models import *
-from Account.models import *
-from Social.models import *
+import requests
 
 
 def connectToRedis():
@@ -32,16 +20,8 @@ def connectToRedis():
 connectToRedis()
 while(True):
 
-    task = connRedis.blpop('like')
-    print(task)
-    # task = task.split()
-    # user = int(task[0])
-    # p = int(task[1])
-    # print(user)
-    # print(p)
-    # if user != None:
-    #     print(Relation.objects.all().filter(userFollowed=user))
-    #     for i in Relation.objects.all().filter(userFollowed=user):
-    #         pNotif = PostNotif(user=i.userFollowing, p=p)
-    #         pNotif.save()
-
+    task = connRedis.blpop('notif')
+    notification = json.loads(task[1])
+    print("requests:", notification)
+    url = "http://127.0.0.1:8000/notification/"
+    requests.post(url, data=notification)
