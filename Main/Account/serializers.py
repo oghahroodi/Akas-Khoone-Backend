@@ -10,6 +10,12 @@ class RelationSerializer(serializers.ModelSerializer):
         fields = ('userFollowing', 'userFollowed')
 
 
+class FollowRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FollowRequest
+        fields = ('userFollowing', 'userFollowed')
+
+
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:

@@ -9,7 +9,8 @@ urlpatterns = [
     path('register/initial/', views.CheckUsername.as_view()),
     path('profile/settings/', views.ChangePassword.as_view()),
     path('checkcontacts/', views.CheckContacts.as_view()),
-    path('accept/', views.Accept.as_view()),
+    path('accept/<int:pk>/', views.Accept.as_view()),
+    path('accept/<int:pk>/', views.Reject.as_view()),
     path('followers/<int:pk>/<searched>/', views.Followers.as_view()),
     path('followings/<int:pk>/<searched>/', views.Followings.as_view()),
     path('unfollow/', views.Unfollow.as_view()),
@@ -19,4 +20,5 @@ urlpatterns = [
     path('verification/<str:token>/', views.validation),
     path('getid', views.GetID.as_view()),
     path('invitation/', views.FriendInvite.as_view()),
+    path('follow/<int:pk>/', views.Follow.as_view()),
     ]
