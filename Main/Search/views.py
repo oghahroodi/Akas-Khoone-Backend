@@ -23,13 +23,15 @@ class SearchTags(APIView):
             queryEq = queryEq | Q(name=entry)
         q = Tag.objects.filter(query).order_by('-searchCount')
         qEq = Tag.objects.filter(queryEq)
-        serializer = TagSerializers(q, many=True, context={"userid": request.user.id})
-        serializerEq = TagSerializers(qEq, many=True,context={"userid": request.user.id})
+        serializer = TagSerializers(q, many=True, context={
+                                    "userid": request.user.id})
+        serializerEq = TagSerializers(qEq, many=True, context={
+                                      "userid": request.user.id})
         resultList = loads(dumps(serializer.data))[0:15]
         resultListEq = loads(dumps(serializerEq.data))
         resultFinalList = resultList + resultListEq
         resultFinalList = list({v['id']: v for v in resultFinalList}.values())
-        #print(resultFinalList)
+        # print(resultFinalList)
         result = {"results": resultFinalList}
         # j = 0
         # for i in resultFinalList:
@@ -67,6 +69,7 @@ class GetTagsPosts(generics.ListAPIView):
         allowed.append(userid)
         return Post.objects.filter(id__in=[i.returnPost() for i in postIDs], user_id__in=allowed)
 
+
 class SearchUsers(APIView):
     def post(self, request):
         user = request.data['user']
@@ -90,3 +93,12 @@ class SearchUsers(APIView):
 
         return JsonResponse(result, status=status.HTTP_200_OK)
 
+
+class TrendingTags(APIView):
+    def get(self, request):
+        q = Tag.objects.all().order_by('-searchCount')
+        serializer = TagSerializers(q, many=True)
+        resultList = loads(dumps(serializer.data))[0:15]
+        result = {"results": result}
+
+        return JsonResponse(result, status=status.HTTP_200_OK)

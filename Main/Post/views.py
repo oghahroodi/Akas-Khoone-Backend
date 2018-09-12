@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
 from  Social.models import Like
-from Notifications.producers import notif
+from Notification.producers import notif
 
 
 class PostDetails(APIView):
