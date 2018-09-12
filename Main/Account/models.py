@@ -82,6 +82,7 @@ class ForgetPassword(models.Model):
 class FollowRequest(models.Model):
     userFollowing = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', null=False)
     userFollowed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed', null=False)
+    date = models.DateTimeField('date published', default=timezone.now)
 
     def followed(self):
         return self.userFollowed.id
