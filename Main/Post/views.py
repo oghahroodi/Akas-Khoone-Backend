@@ -55,14 +55,13 @@ class ProfilePosts(generics.ListCreateAPIView):
         tags = request.data.pop('tags')[0]
         request.data['user'] = userid
         person = Person.objects.get(user__id=request.user.id)
-        request.data['profile'] = person.id
         serializer = PostCreateSerializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
             person.incrementPosts()
             person.save()
             tags = tags.split()
-            tags = [tags.lower() for i in tags]
+            tags = [i.lower() for i in tags]
             # saving tags
             for t in tags:
                 try:

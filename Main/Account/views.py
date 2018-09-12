@@ -99,24 +99,33 @@ class CheckUsername(APIView):
 
 class CheckContacts(APIView):
     def post(self, request):
-        personNumbers = request.data.get("PhoneNumbers")
+        emails = request.data.get("emails")
         contactSituation = []
-        for Number in personNumbers:
+        for email in emails:
             try:
-                contact = Person.objects.get(phoneNumber=Number)
+                contact = User.objects.get(username=email["email"])
                 try:
                     relation = Relation.objects.get(
-                        userFollowing=request.user.id, userFollowed=contact.user.id)
-                    contactSituation.append({'contact': PersonFollowPageSerializer(contact).data,
-                                             'status': contactState(0)})
+                        userFollowing=request.user.id, userFollowed=contact.id)
+                    # contactSituation.append({'email': email,
+                    #                          'id': contact.id,
+                    #                          'status': contactState(0)})
+                    email['id'] = contact.id
+                    email['status'] = contactState(0)
                 except Relation.DoesNotExist:
-                    contactSituation.append({'contact': PersonFollowPageSerializer(contact).data,
-                                             'status': contactState(1)})
+                    # contactSituation.append({'email': email,
+                    #                          'id': contact.id,
+                    #                          'status': contactState(1)})
+                    email['id'] = contact.id
+                    email['status'] = contactState(1)
 
-            except Person.DoesNotExist:
-                contactSituation.append(
-                    {'phoneNumber': Number, 'status': contactState(2)})
-        return Response(contactSituation, status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                # contactSituation.append(
+                #     {'email': email, 'status': contactState(2)})
+                email['status'] = contactState(2)
+                email['id'] = -1
+
+        return Response({"emails": emails}, status=status.HTTP_200_OK)
 
 
 class Accept(APIView):

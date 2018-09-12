@@ -22,15 +22,15 @@ class PersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ('name', 'bio', 'followerNumber',
+        fields = ('id', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber',
-                  'phoneNumber', 'username','isfollowed'
+                  'phoneNumber', 'username', 'isfollowed', "profileImage"
                   )
 
     def get_isfollowed(self, obj):
-        followeing = self.context.get('userid')
-        followed = Person.objects.get(username=obj.username)
-        if (Relation.objects.get(userFollowing_id=followeing, userFollowed= followed.id)):
+        following = self.context.get('userid')
+        try:
+            Relation.objects.get(userFollowing=following, userFollowed= obj.user.id)
             return True
-        else:
+        except Relation.DoesNotExist:
             return False
