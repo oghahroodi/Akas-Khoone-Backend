@@ -74,8 +74,8 @@ class SearchUsers(APIView):
     def post(self, request):
         user = request.data['user']
         user = ''.join(user.split())
-        query = Q(username__startswith=user)
-        queryEq = Q(username=user)
+        query = Q(username__startswith=user) | Q(name__startswith=user)
+        queryEq = Q(username=user) | Q(name=user)
         q = Person.objects.filter(query).order_by('-followerNumber')
         qEq = Person.objects.filter(queryEq)
         serializer = PersonSerializer(q, many=True, context={"userid": request.user.id})
