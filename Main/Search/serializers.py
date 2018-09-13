@@ -22,7 +22,7 @@ class PersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ('id', 'name', 'bio', 'followerNumber',
+        fields = ('user', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber',
                   'phoneNumber', 'username', 'isfollowed', "profileImage"
                   )
