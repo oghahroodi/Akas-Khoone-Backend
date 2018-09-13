@@ -29,7 +29,7 @@ def email(username):
         host='localhost', port=6379, password='', charset="utf-8", decode_responses=True)
     random_token = ''.join([random.choice(string.ascii_uppercase + string.ascii_uppercase) for _ in range(50)])
     red.hmset(random_token, {"email": username})
-    link = ("http://127.0.0.1:8000/verification/%s/" % random_token)
+    link = ("http://192.168.10.211/verification/%s/" % random_token)
     data = {
         "to": username,
         "body": "سلام \n برای کامل شدن ثبت نام روی لینک زیر کلیک کنید \n" + link,

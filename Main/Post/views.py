@@ -7,8 +7,11 @@ from Account.models import Person
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.pagination import *
-from  Social.models import Like
+from Social.models import Like
 from Notification.producers import notif
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PostDetails(APIView):
@@ -43,6 +46,7 @@ class ProfilePosts(generics.ListCreateAPIView):
         try:
             if pk != userid:
                 Relation.objects.get(userFollowed=pk, userFollowing=userid)
+            logger.warning("Your log message is here")
             return self.list(request, *args, **kwargs)
         except Relation.DoesNotExist:
             return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -122,7 +126,8 @@ class BoardDetails(generics.ListCreateAPIView):
         userid = self.request.user.id
         boardid = self.kwargs.get('boardid')
         board = Board.objects.get(id=boardid)
-        usersAllowed = [i.followed() for i in Relation.objects.filter(userFollowing__id=userid)]
+        usersAllowed = [i.followed()
+                        for i in Relation.objects.filter(userFollowing__id=userid)]
         usersAllowed.append(userid)
         return board.posts.filter(user__in=usersAllowed)
 
@@ -144,7 +149,8 @@ class BoardDetails(generics.ListCreateAPIView):
         pk = board.user.id
         if pk != userid:
             return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        serializer = CreateBoardSerializer(board, data=request.data, partial=True)
+        serializer = CreateBoardSerializer(
+            board, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse({"status": "Added"}, status=status.HTTP_200_OK)
@@ -169,10 +175,11 @@ class HomePosts(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user.id
         postUsers = Relation.objects.filter(userFollowing_id=user)
-        showableID=[]
+        showableID = []
         for i in postUsers:
             showableID.append(i.followed())
         showableID.append(user)
-        homePosts = Post.objects.filter(user__in=[i for i in showableID]).order_by('-date')
+        homePosts = Post.objects.filter(
+            user__in=[i for i in showableID]).order_by('-date')
 
         return homePosts

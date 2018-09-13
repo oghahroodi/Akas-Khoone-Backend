@@ -31,11 +31,8 @@ def notif(kind, doer, date, **kwargs):
         jsonStr = json.dumps(jsonDic)
         conn.rpush('notif', jsonStr)
     elif kind == 'request':
-        print(kwargs)
         target = kwargs['target']
-        print("hi")
         jsonDic = makeJsonNotif(kind="request", doer=str(
             doer), target=str(target), date=str(date))
         jsonStr = json.dumps(jsonDic)
-        print(jsonStr)
         conn.rpush('notif', jsonStr)

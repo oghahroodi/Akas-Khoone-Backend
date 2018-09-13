@@ -26,7 +26,6 @@ class getNotification(generics.ListAPIView):
     def get_queryset(self, *args, **kwargs):
 
         try:
-            print((self.request.user.id))
             return Notif.objects.filter(user=str(self.request.user.id))
         except Notif.DoesNotExist:
             return[]
@@ -38,7 +37,6 @@ class Notification(APIView):
 
     def post(self, request):
         if request.META.get("REMOTE_ADDR") == "127.0.0.1":
-            print('shit')
             kind = request.POST['kind']
             doer = request.POST['doer']
             # print(kind)
@@ -51,22 +49,18 @@ class Notification(APIView):
                 # print(target)
             date = request.POST['date']
 
-            print(date)
             if kind == 'comment' or kind == 'like':
                 post = Post.objects.all().filter(pk=int(entity)).first()
-                print('test1')
-                print(str(post.user.id))
                 user = User.objects.all().filter(id=doer).first()
-                print('test2')
-                print(str(user.person))
-                if (str(post.user.id) != str(user.id)):
-                    notif = Notif(kind=kind, entity=post, doer=user.person,
-                                  date=date, user=str(post.user.id))
-                    notif.save()
+
+                n = Notif.objects.filter(user=str(post.user.id), entity=post)
+                if n.count() == 0:
+                    if (str(post.user.id) != str(user.id)):
+                        notif = Notif(kind=kind, entity=post, doer=user.person,
+                                      date=date, user=str(post.user.id))
+                        notif.save()
             if kind == "request":
                 user = User.objects.all().filter(id=doer).first()
-                print(str(user.person))
-                print(target)
                 notif = Notif(kind=kind, date=date,
                               doer=user.person, user=target)
                 notif.save()
