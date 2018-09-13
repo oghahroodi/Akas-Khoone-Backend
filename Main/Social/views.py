@@ -6,7 +6,6 @@ from .models import *
 from rest_framework import generics, status
 from rest_framework.pagination import *
 from Notification.producers import notif
-from django.utils import timezone
 
 
 class SetPagination(PageNumberPagination):
@@ -21,10 +20,10 @@ class PostComments(generics.ListAPIView):
     pagination_class = SetPagination
 
     def get_queryset(self):
-        return Comment.objects.filter(post_id=self.kwargs.get('pk')).order_by('date')
+        return Comment.objects.filter(post_id=self.kwargs.get('pk')).order_by('-date')
 
 
-class Comment(APIView):
+class CommentSet(APIView):
     def post(self, request):
         request.data['user'] = request.user.id
         serializer = CommentCreateSerializer(data=request.data)
@@ -65,6 +64,6 @@ class LikePosts(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class FollowRequest(APIView):
-#     def post(self, request):
-#         notif(kind='followrequest', doer=request.user.id, target=)
+# class LikePosts(APIView):
+#     def get(self, request):
+#         pass

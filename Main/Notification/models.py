@@ -11,5 +11,6 @@ class Notif(models.Model):
     doer = models.ForeignKey(Person, on_delete=models.CASCADE)
     entity = models.ForeignKey(
         Post, on_delete=models.CASCADE, blank=True, null=True)
-    date = models.CharField(max_length=255)
-    user = models.CharField(max_length=255)
+    date=models.CharField(max_length = 255)
+    user=models.CharField(max_length = 255)
+

@@ -13,7 +13,7 @@ class RelationSerializer(serializers.ModelSerializer):
 class FollowRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = FollowRequest
-        fields = ('userFollowing', 'userFollowed')
+        fields = ('userFollowing', 'userFollowed', 'date')
 
 
 class UserSerializer(serializers.ModelSerializer):

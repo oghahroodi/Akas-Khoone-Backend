@@ -8,7 +8,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from .utilities import *
 from rest_framework.permissions import AllowAny
-import os, binascii, redis, requests, json
+import os
+import binascii
+import redis
+import requests
+import json
+from Notification.producers import notif
+from django.utils import timezone
 
 
 class GetID(APIView):
@@ -106,7 +112,8 @@ class CheckContacts(APIView):
             try:
                 contact = User.objects.get(username=email["email"])
                 email['id'] = contact.id
-                email['username'] = Person.objects.get(user_id=contact.id).username
+                email['username'] = Person.objects.get(
+                    user_id=contact.id).username
 
                 if contact.id != request.user.id:
                     try:
@@ -127,7 +134,6 @@ class CheckContacts(APIView):
                         except FollowRequest.DoesNotExist:
                             email['status'] = contactState(1)
 
-
             except User.DoesNotExist:
                 # contactSituation.append(
                 #     {'email': email, 'status': contactState(2)})
@@ -146,21 +152,25 @@ class Accept(APIView):
             if contact.user.id != self.request.user.id:
                 try:
 
-                    relation = Relation.objects.get(userFollowed=request.user.id, userFollowing=contact.user.id)
+                    relation = Relation.objects.get(
+                        userFollowed=request.user.id, userFollowing=contact.user.id)
                     return Response({"status": "شما را قبلا دنبال کرده."}, status=status.HTTP_200_OK)
                 except Relation.DoesNotExist:
 
-
-                    serializer = RelationSerializer(data=makeRelation(contact.user.id, request.user.id))
+                    serializer = RelationSerializer(
+                        data=makeRelation(contact.user.id, request.user.id))
                     try:
-                        req = FollowRequest.objects.get(userFollowed=request.user.id, userFollowing=contact.user.id)
+                        req = FollowRequest.objects.get(
+                            userFollowed=request.user.id, userFollowing=contact.user.id)
                         if serializer.is_valid():
                             serializer.save()
                             req.delete()
-                            followed = Person.objects.get(user_id=request.user.id)
+                            followed = Person.objects.get(
+                                user_id=request.user.id)
                             followed.incrementFollower()
                             followed.save()
-                            follower = Person.objects.get(user_id=contact.user.id)
+                            follower = Person.objects.get(
+                                user_id=contact.user.id)
                             follower.incrementFollowing()
                             follower.save()
                             return Response({"status": "به دنبال کننده های شما اضافه شد. "}, status=status.HTTP_201_CREATED)
@@ -317,13 +327,14 @@ class FriendInvite(APIView):
     def post(self, request):
         email = request.data.get('email')
         person = Person.objects.get(user_id=request.user.id)
-        data = {"to": email, "body": {person.name + "شمارا به نرم افزار عکاس خونه دعوت کرده است"},
+        data = {"to": email, "body": person.name + "شمارا به نرم افزار عکاس خونه دعوت کرده است",
                 "subject": "عکاس خونه"}
 
         requests.post(url="http://192.168.10.66:80/api/send/mail", data=json.dumps(data),
                       headers={"agent-key": "OOmIZh9U6m", "content-type": "application/json"})
 
         return Response({"status": "ایمیل با موفقیت ارسال شد."}, status=status.HTTP_200_OK)
+
 
 class Follow(APIView):
     def post(self, request, pk):
@@ -333,23 +344,27 @@ class Follow(APIView):
             if pk != self.request.user.id:
                 try:
 
-                    FollowRequest.objects.get(userFollowing=request.user.id, userFollowed=pk)
+                    FollowRequest.objects.get(
+                        userFollowing=request.user.id, userFollowed=pk)
                     return Response({"status": "شما قبلا درخواست دنبال کردن فرستاده اید."}, status=status.HTTP_200_OK)
                 except FollowRequest.DoesNotExist:
 
-
-                    serializer = FollowRequestSerializer(data=makeRelation(request.user.id,pk))
+                    serializer = FollowRequestSerializer(
+                        data=makeRelation(request.user.id, pk))
                     if serializer.is_valid():
-                        serializer.save()
+                        req=serializer.save()
+                        
                         followed = Person.objects.get(user_id=pk)
                         followed.incrementFollower()
                         followed.save()
                         follower = Person.objects.get(user_id=request.user.id)
                         follower.incrementFollowing()
                         follower.save()
+                        notif(kind='request', doer=request.user.id,
+                              target=pk, date=req.date)
                         return Response({"status": "درخواست ارسال شد. "}, status=status.HTTP_201_CREATED)
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except Person.DoesNotExist:
             return Response({"status": "این کاربر وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
@@ -360,7 +375,8 @@ class Reject(APIView):
         try:
             Person.objects.get(user_id=pk)
             try:
-                req = FollowRequest.objects.get(userFollowing=request.user.id, userFollowed=pk)
+                req = FollowRequest.objects.get(
+                    userFollowing=request.user.id, userFollowed=pk)
                 req.delete()
                 return Response({"status": "درخواست این کاربر رد شد."}, status=status.HTTP_200_OK)
 
@@ -368,10 +384,3 @@ class Reject(APIView):
                 return Response({"status": "درخواست این کاربر قبلا رد شده است ."}, status=status.HTTP_404_NOT_FOUND)
         except Person.DoesNotExist:
             return Response({"status": "این کاربر وجود ندارد."}, status=status.HTTP_404_NOT_FOUND)
-
-
-
-
-
-
-

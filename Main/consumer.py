@@ -13,7 +13,7 @@ def connectToRedis():
 #        connRedis.ping()
 #        print('Connected!')
     except Exception as ex:
-#        print('Error:', ex)
+        #        print('Error:', ex)
         exit()
 
 

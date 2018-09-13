@@ -1,6 +1,7 @@
 from rest_framework.views import exception_handler
 from rest_framework.exceptions import APIException
 
+
 def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
 
@@ -12,7 +13,6 @@ def custom_exception_handler(exc, context):
         except KeyError:
             response.data['status'] = {"ایمیل یا رمز عبور اشتباه است."}
             return response
-            
-        
+
         # print(response.data)
     return response

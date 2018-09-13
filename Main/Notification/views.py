@@ -41,12 +41,16 @@ class Notification(APIView):
             print('shit')
             kind = request.POST['kind']
             doer = request.POST['doer']
-            entity = request.POST['entity']
+            # print(kind)
+            # print(doer)
+            if kind == "comment" or kind == "like":
+                entity = request.POST['entity']
+                # print(entity)
+            if kind == "request":
+                target = request.POST['target']
+                # print(target)
             date = request.POST['date']
 
-            print(kind)
-            print(doer)
-            print(entity)
             print(date)
             if kind == 'comment' or kind == 'like':
                 post = Post.objects.all().filter(pk=int(entity)).first()
@@ -55,12 +59,17 @@ class Notification(APIView):
                 user = User.objects.all().filter(id=doer).first()
                 print('test2')
                 print(str(user.person))
-
-                notif = Notif(kind=kind, entity=post, doer=user.person,
-                              date=date, user=str(post.user.id))
+                if (str(post.user.id) != str(user.id)):
+                    notif = Notif(kind=kind, entity=post, doer=user.person,
+                                  date=date, user=str(post.user.id))
+                    notif.save()
+            if kind == "request":
+                user = User.objects.all().filter(id=doer).first()
+                print(str(user.person))
+                print(target)
+                notif = Notif(kind=kind, date=date,
+                              doer=user.person, user=target)
                 notif.save()
-                #         elif kind == 'follow':
-                #             pass
 
                 return Response(status=status.HTTP_200_OK)
             else:

@@ -51,19 +51,22 @@ class Person(models.Model):
         self.postNumber += 1
         return
 
-
     def getID(self):
         return self.id
 
+
 class Relation(models.Model):
-    userFollowing = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', null=False)
-    userFollowed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed', null=False)
+    userFollowing = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='following', null=False)
+    userFollowed = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='followed', null=False)
 
     def followed(self):
         return self.userFollowed.id
 
     def following(self):
         return self.userFollowing.id
+
 
 class ForgetPassword(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -80,8 +83,10 @@ class ForgetPassword(models.Model):
 
 
 class FollowRequest(models.Model):
-    userFollowing = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', null=False)
-    userFollowed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed', null=False)
+    userFollowing = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='following2', null=False)
+    userFollowed = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='followed2', null=False)
     date = models.DateTimeField('date published', default=timezone.now)
 
     def followed(self):
