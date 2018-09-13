@@ -36,5 +36,5 @@ class PersonSerializer(serializers.ModelSerializer):
             try:
                 FollowRequest.objects.get(userFollowing=following, userFollowed=obj.user.id)
                 return 'requested'
-            except Relation.DoesNotExist:
-                return "notfollowed"
+            except FollowRequest.DoesNotExist:
+                return 'notfollowed'
