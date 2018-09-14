@@ -1,12 +1,12 @@
 SSH alias config
 
-Add user team4 (123456)
+Add user team4
 
 disable login as root
 
 Config ssh
 
-Set time
+Setup time
 
 Open port 22222
 
@@ -53,26 +53,3 @@ add user root
 create db akas_khoone
 
 Create user team
-
-
-
-?
-Backup
-Test backup
-Docker
-Ci/cd
-Log
-Redis
-
-
-
-
-
-
-
-
-
-
-
-
-
