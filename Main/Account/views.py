@@ -26,7 +26,7 @@ class GetID(APIView):
 class ProfileInfo(APIView):
     def get(self, request, pk):
         person = Person.objects.get(user__id=pk)
-        serializer = PersonInfoSerializer(person)
+        serializer = PersonInfoSerializer(person,context={"userid": request.user.id})
         return JsonResponse(serializer.data)
 
     def patch(self, request, pk):
