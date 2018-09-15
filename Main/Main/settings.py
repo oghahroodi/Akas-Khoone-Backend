@@ -147,37 +147,37 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'exception.views.custom_exception_handler'
 }
 
-import logging
-from django.utils.log import DEFAULT_LOGGING
-LOGGING_CONFIG = None
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'console': {
+#import logging
+#from django.utils.log import DEFAULT_LOGGING
+#LOGGING_CONFIG = None
+#logging.config.dictConfig({
+#    'version': 1,
+#    'disable_existing_loggers': False,
+#    'formatters': {
+#        'console': {
             # exact format is not important, this is the minimum information
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+#            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
             # 'django.server': DEFAULT_LOGGING['formatters']['django.server'],
-        },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'console',
-        },
-        # 'django.server': DEFAULT_LOGGING['handlers']['django.server'],
-        # Add Handler for Sentry for `warning` and above
-        'sentry': {
-            'level': 'WARNING',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-        },
-    },
-    'loggers': {
-        # root logger
-        # 'django.server': DEFAULT_LOGGING['loggers']['django.server'],
-        '': {
-            'level': 'WARNING',
-            'handlers': ['console', 'sentry'],
-        },
-    },
-})
+#        },
+#    },
+#    'handlers': {
+#        'console': {
+#            'class': 'logging.StreamHandler',
+#            'formatter': 'console',
+#        },
+#        # 'django.server': DEFAULT_LOGGING['handlers']['django.server'],
+#        # Add Handler for Sentry for `warning` and above
+#        'sentry': {
+#            'level': 'WARNING',
+#            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+#        },
+#    },
+#    'loggers': {
+#        # root logger
+#        # 'django.server': DEFAULT_LOGGING['loggers']['django.server'],
+#        '': {
+#            'level': 'WARNING',
+#            'handlers': ['console', 'sentry'],
+#        },
+#    },
+#})
