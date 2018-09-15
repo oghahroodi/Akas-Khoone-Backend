@@ -362,7 +362,7 @@ class Follow(APIView):
                         follower.save()
                         notif(kind='request', doer=request.user.id,
                               target=pk, date=req.date)
-                        return Response({"status": "درخواست ارسال شد. "}, status=status.HTTP_201_CREATED)
+                        return Response({"status": "درخواست ارسال شد. ","userid":pk}, status=status.HTTP_201_CREATED)
 
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
