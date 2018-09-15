@@ -46,7 +46,7 @@ class LikePosts(APIView):
             post.decrease()
             post.save()
             liked.delete()
-            return JsonResponse({'status': 'دوست داشته نشد.'}, status=status.HTTP_200_OK)
+            return JsonResponse({'status': 'دوست داشته نشد.','id':pk}, status=status.HTTP_200_OK)
 
         except Like.DoesNotExist:
             request.data['user'] = request.user.id
@@ -60,7 +60,7 @@ class LikePosts(APIView):
                 like = serializer.save()
                 notif(kind='like', doer=request.user.id,
                       entity=pk, date=like.date)
-                return JsonResponse({'status': "دوست داشته شد."}, status=status.HTTP_201_CREATED)
+                return JsonResponse({'status': "دوست داشته شد.",'id':pk}, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
