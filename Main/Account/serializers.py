@@ -41,7 +41,7 @@ class PersonInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ('username', 'email', 'name', 'bio', 'followerNumber',
-                  'followingNumber', 'postNumber', 'boardNumber', 'profileImage','id','isfollowed')
+                  'followingNumber', 'postNumber', 'boardNumber', 'profileImage','user','isfollowed')
         # , 'profileImage'
 
     def get_email(self, obj):
