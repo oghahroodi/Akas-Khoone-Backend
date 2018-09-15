@@ -354,12 +354,12 @@ class Follow(APIView):
                     if serializer.is_valid():
                         req=serializer.save()
                         
-                        followed = Person.objects.get(user_id=pk)
-                        followed.incrementFollower()
-                        followed.save()
-                        follower = Person.objects.get(user_id=request.user.id)
-                        follower.incrementFollowing()
-                        follower.save()
+                        #followed = Person.objects.get(user_id=pk)
+                        #followed.incrementFollower()
+                        #followed.save()
+                        #follower = Person.objects.get(user_id=request.user.id)
+                        #follower.incrementFollowing()
+                        #follower.save()
                         notif(kind='request', doer=request.user.id,
                               target=pk, date=req.date)
                         return Response({"status": "درخواست ارسال شد. ","userid":pk}, status=status.HTTP_201_CREATED)
