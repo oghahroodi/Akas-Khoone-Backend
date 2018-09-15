@@ -244,7 +244,7 @@ class Unfollow(APIView):
             person = Person.objects.get(user_id=request.user.id)
             person.decreseFollowing()
             person.save()
-            return Response({"status": "شما دیکر او را دنبال نمیکنید."}, status=status.HTTP_200_OK)
+            return Response({"status": "شما دیکر او را دنبال نمیکنید.","username":personUser}, status=status.HTTP_200_OK)
         except Relation.DoesNotExist:
             return Response({"status": "شما او را دنبال نمیکنید."}, status=status.HTTP_200_OK)
 
