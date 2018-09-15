@@ -80,18 +80,6 @@ class CreateUser(APIView):
             return Response(personserializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(userserializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # serializer = PersonSerializer(data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     username = request.data.get('user')['username']
-        #     user = User.objects.get(
-        #         username=username)
-        #     user.set_password(request.data.get('user')['password'])
-        #     user.is_active = False
-        #     user.save()
-        #     email(username)
-        #     return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckUsername(APIView):
@@ -119,14 +107,8 @@ class CheckContacts(APIView):
                     try:
                         relation = Relation.objects.get(
                             userFollowing=request.user.id, userFollowed=contact.id)
-                        # contactSituation.append({'email': email,
-                        #                          'id': contact.id,
-                        #                          'status': contactState(0)})
                         email['status'] = contactState(0)
                     except Relation.DoesNotExist:
-                        # contactSituation.append({'email': email,
-                        #                          'id': contact.id,
-                        #                          'status': contactState(1)})
                         try:
                             req = FollowRequest.objects.get(
                                 userFollowing=request.user.id, userFollowed=contact.id)
@@ -135,8 +117,6 @@ class CheckContacts(APIView):
                             email['status'] = contactState(1)
 
             except User.DoesNotExist:
-                # contactSituation.append(
-                #     {'email': email, 'status': contactState(2)})
                 email['status'] = contactState(2)
                 email['id'] = -1
                 email['username'] = ""
@@ -354,12 +334,6 @@ class Follow(APIView):
                     if serializer.is_valid():
                         req=serializer.save()
                         
-                        #followed = Person.objects.get(user_id=pk)
-                        #followed.incrementFollower()
-                        #followed.save()
-                        #follower = Person.objects.get(user_id=request.user.id)
-                        #follower.incrementFollowing()
-                        #follower.save()
                         notif(kind='request', doer=request.user.id,
                               target=pk, date=req.date)
                         return Response({"status": "درخواست ارسال شد. ","userid":pk}, status=status.HTTP_201_CREATED)
