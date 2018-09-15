@@ -26,14 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
         if validators.validate_password(value) is None:
             return value
 
-    # def validate_username(self,value):
 
-    # def save(self, **kwargs):
-    #     user = User(username=self.validated_data['username'])
-    #     if validators.validate_password(self.validated_data['password'], user):
-    #         user.set_password(self.validated_data['password'])
-    #         user.save()
-    #         return user
 
 
 class PersonFollowPageSerializer(serializers.ModelSerializer):
@@ -44,16 +37,28 @@ class PersonFollowPageSerializer(serializers.ModelSerializer):
 
 class PersonInfoSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
-
+    isfollowed = serializers.SerializerMethodField()
     class Meta:
         model = Person
         fields = ('username', 'email', 'name', 'bio', 'followerNumber',
-                  'followingNumber', 'postNumber', 'boardNumber', 'profileImage')
+                  'followingNumber', 'postNumber', 'boardNumber', 'profileImage','id','isfollowed')
         # , 'profileImage'
 
     def get_email(self, obj):
         user = User.objects.get(id=obj.user.id)
         return user.username
+        
+    def get_isfollowed(self,obj):
+        following = self.context.get('userid')
+        try:
+            Relation.objects.get(userFollowing=following, userFollowed=obj.user.id)
+            return 'following'
+        except Relation.DoesNotExist:
+            try:
+                FollowRequest.objects.get(userFollowing=following, userFollowed=obj.user.id)
+                return 'requested'
+            except FollowRequest.DoesNotExist:
+                return 'notfollowed'
 
 
 
@@ -61,12 +66,11 @@ class PersonChangeInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ('name', 'bio', 'phoneNumber', 'profileImage')
-        # , 'profileImage'
+    
 
 
 class PersonSerializer(serializers.ModelSerializer):
 
-    #user = UserSerializer(required=True)
 
     class Meta:
         model = Person
@@ -74,13 +78,3 @@ class PersonSerializer(serializers.ModelSerializer):
                   'followingNumber', 'postNumber',
                   'phoneNumber', 'username', 'profileImage'
                   )
-        # , 'profileImage'
-
-    # def create(self, validated_data):
-    #     user_data = validated_data.pop('user')
-    #     serializer = UserSerializer(data=user_data)
-    #     if serializer.is_valid():
-    #         user = serializer.save()
-    #         person, created = Person.objects.update_or_create(
-    #             user=user, **validated_data)
-    #         return person
