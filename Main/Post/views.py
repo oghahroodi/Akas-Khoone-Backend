@@ -120,9 +120,6 @@ class BoardDetails(generics.ListCreateAPIView):
     pagination_class = SetPagination
 
     def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        board = Board.objects.get(id=pk)
-        return board.posts.all().order_by('-date')
         userid = self.request.user.id
         boardid = self.kwargs.get('boardid')
         board = Board.objects.get(id=boardid)
