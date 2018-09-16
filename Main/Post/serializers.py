@@ -7,7 +7,6 @@ from Social.models import Like
 
 
 class PostSerializer(serializers.ModelSerializer):
-    #profile = PersonInfoSerializer(required=True)
     isLiked = serializers.SerializerMethodField()
     profile = serializers.SerializerMethodField()
 
@@ -43,7 +42,7 @@ class BoardSerializer(serializers.ModelSerializer):
 class CreateBoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
-        fields = ('user','title', 'postNumber', 'posts')
+        fields = ('user', 'title', 'postNumber', 'posts')
 
 
 class PostCreateSerializer(serializers.ModelSerializer):

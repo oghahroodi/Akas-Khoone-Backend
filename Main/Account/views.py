@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 class GetID(APIView):
     def get(self, request):
-        userid = request.user.
+        userid = request.user.id
         logger.info(str(request.user.id)+" gets id")
         return JsonResponse({"id": userid})
 
@@ -306,8 +306,7 @@ def validation(request, token):
                             password='', charset="utf-8", decode_responses=True)
     info = red.hgetall(token)
     email = info.get('email')
-    if not (info and email):
-        print("PermissionDenied")
+
 
     user = User.objects.get(username=email)
     user.is_active = True
@@ -370,3 +369,36 @@ class Reject(APIView):
                 return Response({"status": "درخواست این کاربر قبلا رد شده است ."}, status=status.HTTP_404_NOT_FOUND)
         except Person.DoesNotExist:
             return Response({"status": "این کاربر وجود ندارد."}, status=status.HTTP_404_NOT_FOUND)
+
+class SubFollow(APIView):
+
+    def post(self, request, pk):
+        try:
+            contact = Person.objects.get(user_id=pk)
+            if contact.user.id != self.request.user.id:
+                try:
+
+                    relation = Relation.objects.get(
+                        userFollowing=request.user.id, userFollowed=contact.user.id)
+                    return Response({"status": "شما او را دنبال کرده اید."}, status=status.HTTP_200_OK)
+                except Relation.DoesNotExist:
+
+                    serializer = RelationSerializer(
+                        data=makeRelation(request.user.id, contact.user.id))
+
+                    if serializer.is_valid():
+                        serializer.save()
+                        follower = Person.objects.get(user_id=request.user.id)
+                        follower.incrementFollowing()
+                        follower.save()
+                        followed = Person.objects.get(user_id=contact.user.id)
+                        followed.incrementFollower()
+                        followed.save()
+                        logger.info(str(pk) + " follow "+str(request.user.id))
+                        return Response({"status": "دنبال شد. "},
+                                        status=status.HTTP_201_CREATED)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Person.DoesNotExist:
+            return Response({"status": "این کاربر وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
+

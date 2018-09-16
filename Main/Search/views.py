@@ -35,13 +35,7 @@ class SearchTags(APIView):
         resultListEq = loads(dumps(serializerEq.data))
         resultFinalList = resultList + resultListEq
         resultFinalList = list({v['id']: v for v in resultFinalList}.values())
-        # print(resultFinalList)
         result = {"results": resultFinalList}
-        # j = 0
-        # for i in resultFinalList:
-        #     j += 1
-        #     result[j] = 
-        
         logger.info("user:"+str(request.user.id) +"search for"+request.data['tags'])
 
         return JsonResponse(result, status=status.HTTP_200_OK)
@@ -71,7 +65,6 @@ class GetTagsPosts(generics.ListAPIView):
 
         postIDs = TagPost.objects.filter(tag=tag.returnID())
         allowed = [i.followed() for i in allowedUser]
-        #print(i.followed() for i in allowedUser)
         allowed.append(userid)
         logger.info("user:"+str(self.request.user.id) + "click on"+t)
         return Post.objects.filter(id__in=[i.returnPost() for i in postIDs], user_id__in=allowed)

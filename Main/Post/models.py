@@ -10,7 +10,6 @@ class Post(models.Model):
     date = models.DateTimeField('date published', default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
-    #profile = models.ForeignKey(Person, on_delete=models.CASCADE)
 
     def getID(self):
         return self.id

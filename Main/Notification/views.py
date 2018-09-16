@@ -39,17 +39,11 @@ class Notification(APIView):
         if request.META.get("REMOTE_ADDR") == "127.0.0.1":
             kind = request.POST['kind']
             doer = request.POST['doer']
-            # print(kind)
-            # print(doer)
-            if kind == "comment" or kind == "like":
-                entity = request.POST['entity']
-                # print(entity)
-            if kind == "request":
-                target = request.POST['target']
-                # print(target)
+
             date = request.POST['date']
 
             if kind == 'comment' or kind == 'like':
+                entity = request.POST['entity']
                 post = Post.objects.all().filter(pk=int(entity)).first()
                 user = User.objects.all().filter(id=doer).first()
 
@@ -60,6 +54,7 @@ class Notification(APIView):
                                       date=date, user=str(post.user.id))
                         notif.save()
             if kind == "request":
+                target = request.POST['target']
                 user = User.objects.all().filter(id=doer).first()
                 notif = Notif(kind=kind, date=date,
                               doer=user.person, user=target)

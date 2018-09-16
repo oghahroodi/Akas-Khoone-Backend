@@ -166,7 +166,7 @@ logging.config.dictConfig({
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '/Users/omid/Documents/RahnemaCollege/Akas_khoone/logs.log',
+            'filename': '/rahnema/logs.log',
 
         }
     },

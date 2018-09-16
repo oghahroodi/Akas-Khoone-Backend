@@ -1,12 +1,12 @@
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
-
+import logging
 from .serializer import *
 from .models import *
 from rest_framework import generics, status
 from rest_framework.pagination import *
 from Notification.producers import notif
-
+logger=logging.getLogger(__name__)
 
 class SetPagination(PageNumberPagination):
     page_size = 2
@@ -32,9 +32,8 @@ class CommentSet(APIView):
         post.save()
         if serializer.is_valid():
             comment = serializer.save()
-            notif(kind='comment', doer=request.user.id,
-                  entity=request.data['post'], date=comment.date)
-                  logger.info("user:"+str(request.user.id) +"comment on "+request.data['post'])
+            notif(kind='comment', doer=request.user.id, entity=request.data['post'], date=comment.date)
+            logger.info("user:"+str(request.user.id) +"comment on "+request.data['post'])
             return JsonResponse({'status': 'ساخته شد.','comment':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -65,7 +64,3 @@ class LikePosts(APIView):
                 return JsonResponse({'status': "دوست داشته شد.",'id':pk}, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# class LikePosts(APIView):
-#     def get(self, request):
-#         pass
