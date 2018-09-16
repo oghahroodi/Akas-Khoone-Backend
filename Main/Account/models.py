@@ -13,7 +13,7 @@ class Person(models.Model):
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$', message="شماره تلفن باید عدد و بین 9 تا 15 رقم باشد.")
     phoneNumber = models.CharField(validators=[
-                                   phone_regex], max_length=17, blank=True,  unique=True)  # validators should be a list
+                                   phone_regex], max_length=17, blank=True,  unique=True)
     validation = models.BooleanField(default=False)
     accountCreationDate = models.DateTimeField(
         'date published', default=timezone.now)
@@ -25,8 +25,6 @@ class Person(models.Model):
     boardNumber = models.IntegerField(default=0)
     profileImage = models.ImageField(upload_to='images/%Y/%m/%d/')
 
-    # store path of images to database for performance
-    #picAddress = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.username
