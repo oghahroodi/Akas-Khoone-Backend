@@ -176,9 +176,7 @@ class Followers(generics.ListAPIView):
         user = User.objects.get(id=self.kwargs.get('pk'))
         if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.id)
                 or self.kwargs.get('pk') == self.request.user.id):
-            followers = Relation.objects.filter(
-                userFollowed_id=self.request.user.id)
-            print(followers)
+            followers = Relation.objects.filter(userFollowed_id=self.kwargs.get('pk'))
             if self.kwargs.get('searched') == "!":
                 return Person.objects.filter(user_id__in=[i.following() for i in followers])
             else:
@@ -195,11 +193,11 @@ class Followings(generics.ListAPIView):
     pagination_class = SetPagination
 
     def get_queryset(self):
-        user = Person.objects.get(user_id=self.kwargs.get('pk'))
-        if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.getID())
+        user = User.objects.get(id=self.kwargs.get('pk'))
+        if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.id)
                 or self.kwargs.get('pk') == self.request.user.id):
             following = Relation.objects.filter(
-                userFollowing_id=self.request.user.id)
+                userFollowing_id=self.kwargs.get('pk'))
             if self.kwargs.get('searched') == "!":
                 return Person.objects.filter(user_id__in=[i.followed() for i in following])
             else:
