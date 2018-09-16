@@ -34,7 +34,7 @@ class CommentSet(APIView):
             comment = serializer.save()
             notif(kind='comment', doer=request.user.id,
                   entity=request.data['post'], date=comment.date)
-            return JsonResponse({'status': 'ساخته شد.'}, status=status.HTTP_201_CREATED)
+            return JsonResponse({'status': 'ساخته شد.','comment':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
