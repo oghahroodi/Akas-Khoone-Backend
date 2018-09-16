@@ -20,6 +20,7 @@ class PostDetails(APIView):
         serializer = PostSerializer(post)
         if (Relation.objects.filter(userFollowed_id=post.getUserID(), userFollowing_id=request.user.id)
                 or post.getUserID() == self.request.user.id):
+            logger.info("user:"+str(request.user.id) +"get detail of "+str(pk)+"post")
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({"status": "شما اجازهی دست رسی به این صفحه را ندارید."}, status=status.HTTP_401_UNAUTHORIZED)
@@ -46,7 +47,7 @@ class ProfilePosts(generics.ListCreateAPIView):
         try:
             if pk != userid:
                 Relation.objects.get(userFollowed=pk, userFollowing=userid)
-            logger.warning("Your log message is here")
+            logger.info("user:"+str(request.user.id) + "get post"+pk)
             return self.list(request, *args, **kwargs)
         except Relation.DoesNotExist:
             return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -76,6 +77,7 @@ class ProfilePosts(generics.ListCreateAPIView):
                 tagpost = TagPost(post=post, tag=tag)
                 tagpost.save()
             # notif('post', request.user.id, serializer.id)
+            logger.info("user:"+str(userid) + "create post")
             return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -100,6 +102,7 @@ class ProfileBoards(generics.ListCreateAPIView):
                 Relation.objects.get(userFollowed=pk, userFollowing=userid)
             return self.list(request, *args, **kwargs)
         except Relation.DoesNotExist:
+            logger.info("user:"+str(userid) + "get profile board")
             return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
 
     def post(self, request, *args, **kwargs):
