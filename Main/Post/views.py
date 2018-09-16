@@ -37,7 +37,7 @@ class ProfilePosts(generics.ListCreateAPIView):
     pagination_class = SetPagination
 
     def get_queryset(self):
-        user = self.request.user.id
+        user = self.kwargs.get('pk')
         return Post.objects.filter(user=user)
 
     def get(self, request, *args, **kwargs):
