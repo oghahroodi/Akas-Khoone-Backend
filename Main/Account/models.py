@@ -23,7 +23,7 @@ class Person(models.Model):
         validators=[user_regex], max_length=100, null=False, unique=True)
     postNumber = models.IntegerField(default=0)
     boardNumber = models.IntegerField(default=0)
-    profileImage = models.ImageField(upload_to='images/%Y/%m/%d/')
+    profileImage = models.ImageField(upload_to='images/%Y/%m/%d/', default='images/default.png')
 
 
     def __str__(self):
