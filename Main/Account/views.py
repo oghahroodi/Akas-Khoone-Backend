@@ -15,11 +15,15 @@ import requests
 import json
 from Notification.producers import notif
 from django.utils import timezone
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class GetID(APIView):
     def get(self, request):
-        userid = request.user.id
+        userid = request.user.
+        logger.info(str(request.user.id)+" gets id")
         return JsonResponse({"id": userid})
 
 
@@ -27,6 +31,7 @@ class ProfileInfo(APIView):
     def get(self, request, pk):
         person = Person.objects.get(user__id=pk)
         serializer = PersonInfoSerializer(person,context={"userid": request.user.id})
+        logger.info(str(request.user.id)+" :gets profile info")
         return JsonResponse(serializer.data)
 
     def patch(self, request, pk):
@@ -38,6 +43,7 @@ class ProfileInfo(APIView):
             person, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            logger.info(str(request.user.id)+" :change profile info")
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -52,6 +58,7 @@ class ChangePassword(APIView):
             user.set_password(new)
             user.save()
             serializer = UserSerializer(user)
+            logger.info(str(request.user.id)+" :change password")
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"status": "رمز قدیمی اشتباه است."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -76,6 +83,7 @@ class CreateUser(APIView):
             if personserializer.is_valid():
                 person = personserializer.save()
                 email(username)
+                logger.info("user with email:"+username+"created")
                 return JsonResponse({'status': 'CREATED'}, status=status.HTTP_201_CREATED)
             user.delete()
             return Response(personserializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -97,6 +105,7 @@ class CheckContacts(APIView):
     def post(self, request):
         emails = request.data.get("emails")
         contactSituation = []
+        logger.info(str(request.user.id)+"see contact status")
         for email in emails:
             try:
                 contact = User.objects.get(username=email["email"])
@@ -153,7 +162,8 @@ class Accept(APIView):
                             follower = Person.objects.get(
                                 user_id=contact.user.id)
                             follower.incrementFollowing()
-                            follower.save()
+                            follower.save
+                            logger.info(str(request.user.id) +"accept"+str(pk)+"follow request")
                             return Response({"status": "به دنبال کننده های شما اضافه شد. "}, status=status.HTTP_201_CREATED)
                         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                     except FollowRequest.DoesNotExist:
@@ -223,6 +233,7 @@ class Unfollow(APIView):
             person = Person.objects.get(user_id=request.user.id)
             person.decreseFollowing()
             person.save()
+            logger.info(str(request.user.id) + "unfollow"+str(personUser))
             return Response({"status": "شما دیکر او را دنبال نمیکنید.","username":personUser}, status=status.HTTP_200_OK)
         except Relation.DoesNotExist:
             return Response({"status": "شما او را دنبال نمیکنید."}, status=status.HTTP_200_OK)
@@ -243,6 +254,7 @@ class ForgetPasswordEmail(APIView):
                     "subject": "فراموشی رمز عبور"}
             requests.post(url="http://192.168.10.66:80/api/send/mail", data=json.dumps(data),
                           headers={"agent-key": "OOmIZh9U6m", "content-type": "application/json"})
+            logger.info("send forget pass email for email :"+email)
             return Response({"status": "ایمیل با موفقیت ارسال شد."}, status=status.HTTP_200_OK)
 
         except User.DoesNotExist:
@@ -282,6 +294,7 @@ class ForgetPasswordNewPassword(APIView):
             user.set_password(newpassword)
             user.save()
             FP.delete()
+            logger.info("user with eamil"+email+"change password")
             return Response({"status": "رمز شما تغییر کرد."}, status=status.HTTP_200_OK)
 
         except ForgetPassword.DoesNotExist:
@@ -311,7 +324,7 @@ class FriendInvite(APIView):
 
         requests.post(url="http://192.168.10.66:80/api/send/mail", data=json.dumps(data),
                       headers={"agent-key": "OOmIZh9U6m", "content-type": "application/json"})
-
+        logger.info("user:"+str(request.user.id)+"invite friend :"+email)
         return Response({"status": "ایمیل با موفقیت ارسال شد."}, status=status.HTTP_200_OK)
 
 
