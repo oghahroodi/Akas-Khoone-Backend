@@ -50,6 +50,8 @@ class PersonInfoSerializer(serializers.ModelSerializer):
         
     def get_isfollowed(self,obj):
         following = self.context.get('userid')
+        if obj.user.id==following:
+            return 'following'
         try:
             Relation.objects.get(userFollowing=following, userFollowed=obj.user.id)
             return 'following'
