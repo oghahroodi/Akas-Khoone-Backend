@@ -42,7 +42,7 @@ class PersonInfoSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('username', 'email', 'name', 'bio', 'followerNumber',
                   'followingNumber', 'postNumber', 'boardNumber', 'profileImage','user','isfollowed')
-        # , 'profileImage'
+
 
     def get_email(self, obj):
         user = User.objects.get(id=obj.user.id)
