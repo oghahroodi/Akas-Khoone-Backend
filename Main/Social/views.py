@@ -34,6 +34,7 @@ class CommentSet(APIView):
             comment = serializer.save()
             notif(kind='comment', doer=request.user.id,
                   entity=request.data['post'], date=comment.date)
+                  logger.info("user:"+str(request.user.id) +"comment on "+request.data['post'])
             return JsonResponse({'status': 'ساخته شد.','comment':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -60,6 +61,7 @@ class LikePosts(APIView):
                 like = serializer.save()
                 notif(kind='like', doer=request.user.id,
                       entity=pk, date=like.date)
+                logger.info("user:"+str(request.user.id) + "like  "+str(pk))
                 return JsonResponse({'status': "دوست داشته شد.",'id':pk}, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
