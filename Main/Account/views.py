@@ -395,7 +395,7 @@ class SubFollow(APIView):
                         followed.incrementFollower()
                         followed.save()
                         logger.info(str(pk) + " follow "+str(request.user.id))
-                        return Response({"status": "دنبال شد. "},
+                        return Response({"status": "دنبال شد. ", "userid":pk},
                                         status=status.HTTP_201_CREATED)
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
