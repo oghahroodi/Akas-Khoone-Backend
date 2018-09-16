@@ -79,7 +79,7 @@ class CreateUser(APIView):
             user.is_active = False
             user.save()
             registerdata['user'] = userid
-            personserializer = PersonSerializer(data=request.data)
+            personserializer = PersonSerializer(data=registerdata)
             if personserializer.is_valid():
                 person = personserializer.save()
                 email(username)
