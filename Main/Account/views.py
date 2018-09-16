@@ -173,8 +173,8 @@ class Followers(generics.ListAPIView):
     pagination_class = SetPagination
 
     def get_queryset(self):
-        user = Person.objects.get(user_id=self.kwargs.get('pk'))
-        if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.getID())
+        user = User.objects.get(id=self.kwargs.get('pk'))
+        if (Relation.objects.filter(userFollowing_id=self.request.user.id, userFollowed_id=user.id)
                 or self.kwargs.get('pk') == self.request.user.id):
             followers = Relation.objects.filter(
                 userFollowed_id=self.request.user.id)
