@@ -47,7 +47,7 @@ class ProfilePosts(generics.ListCreateAPIView):
         try:
             if pk != userid:
                 Relation.objects.get(userFollowed=pk, userFollowing=userid)
-            logger.info("user:"+str(request.user.id) + "get post"+pk)
+            logger.info("user:"+str(request.user.id) + "get post"+str(pk))
             return self.list(request, *args, **kwargs)
         except Relation.DoesNotExist:
             return JsonResponse({"status": "Not_Authorized"}, status=status.HTTP_401_UNAUTHORIZED)
