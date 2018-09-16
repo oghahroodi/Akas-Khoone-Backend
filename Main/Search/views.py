@@ -9,6 +9,10 @@ from rest_framework.views import APIView
 
 from .models import *
 from .serializers import *
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 
 class SearchTags(APIView):
@@ -36,7 +40,9 @@ class SearchTags(APIView):
         # j = 0
         # for i in resultFinalList:
         #     j += 1
-        #     result[j] = i
+        #     result[j] = 
+        
+        logger.info("user:"+str(request.user.id) +"search for"+request.data['tags'])
 
         return JsonResponse(result, status=status.HTTP_200_OK)
 
@@ -67,6 +73,7 @@ class GetTagsPosts(generics.ListAPIView):
         allowed = [i.followed() for i in allowedUser]
         #print(i.followed() for i in allowedUser)
         allowed.append(userid)
+        logger.info("user:"+str(self.request.user.id) + "click on"+t)
         return Post.objects.filter(id__in=[i.returnPost() for i in postIDs], user_id__in=allowed)
 
 
@@ -86,11 +93,7 @@ class SearchUsers(APIView):
         resultFinalList = list(
             {v['username']: v for v in resultFinalList}.values())
         result = {"results": resultFinalList}
-        # j = 0
-        # for i in resultFinalList:
-        #     j += 1
-        #     result[j] = i
-
+        logger.info("user:"+str(request.user.id) +"search for"+request.data['user'])
         return JsonResponse(result, status=status.HTTP_200_OK)
 
 
