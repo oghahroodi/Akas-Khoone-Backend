@@ -60,8 +60,9 @@ class CreateUser(APIView):
     permission_classes = (AllowAny,)
 
     def post(self, request):
-        username = request.data.pop('email')[0]
-        password = request.data.pop('password')[0]
+        username = request.data.get('email')
+        password = request.data.get('password')
+        registerdata = request.data.copy()
         userserializer = UserSerializer(
             data={"username": username, "password": password})
         if userserializer.is_valid():
@@ -70,7 +71,7 @@ class CreateUser(APIView):
             user.set_password(password)
             user.is_active = False
             user.save()
-            request.data['user'] = userid
+            registerdata['user'] = userid
             personserializer = PersonSerializer(data=request.data)
             if personserializer.is_valid():
                 person = personserializer.save()
