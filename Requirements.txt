@@ -1,7 +1,7 @@
 autopep8==1.4
 certifi==2018.8.24
 chardet==3.0.4
-Django==2.1
+Django==2.2.24
 django-braces==1.13.0
 djangorestframework==3.8.2
 djangorestframework-simplejwt==3.2.3
